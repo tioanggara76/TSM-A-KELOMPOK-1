@@ -308,7 +308,7 @@
           </div>
 
           <button type="submit" id="btnSubmitJournal" class="btn btn-primary w-100 fw-semibold btn-sm py-2">
-            <i class="bi bi-plus-circle me-1"></i> Tambah Kegiatan ke Jurnal
+            <i class="bi bi-plus-circle me-1"></i> Simpan
           </button>
         </form>
       </div>
@@ -343,7 +343,7 @@
             <input type="text" id="inputFotoKet" class="form-control form-control-sm" placeholder="Keterangan Foto (Contoh: Praktik Servis Karburator)">
           </div>
           <div class="col-12 col-md-4">
-            <button class="btn btn-success btn-sm w-100" onclick="uploadSelectedFoto()"><i class="bi bi-cloud-upload me-1"></i> Upload ke Dokumentasi</button>
+            <button class="btn btn-success btn-sm w-100" onclick="uploadSelectedFoto()"><i class="bi bi-cloud-upload me-1"></i> Upload Dokumentasi</button>
           </div>
         </div>
 
@@ -358,8 +358,8 @@
             <h6 class="m-0 fw-bold fs-7"><i class="bi bi-download me-1"></i> Simpan / Cetak Laporan</h6>
           </div>
           <div class="d-flex flex-wrap gap-1 w-100 w-md-auto">
-            <button class="btn btn-danger btn-sm flex-fill" onclick="generatePDF()"><i class="bi bi-file-earmark-pdf-fill me-1"></i> Direct PDF</button>
-            <button class="btn btn-secondary btn-sm flex-fill" onclick="triggerPrint()"><i class="bi bi-printer-fill me-1"></i> Cetak / Simpan PDF HP</button>
+            <!-- <button class="btn btn-danger btn-sm flex-fill" onclick="generatePDF()"><i class="bi bi-file-earmark-pdf-fill me-1"></i> Direct PDF</button> -->
+            <button class="btn btn-danger btn-sm flex-fill" onclick="triggerPrint()"><i class="bi bi-printer-fill me-1"></i> Cetak / Simpan PDF HP</button>
             <button class="btn btn-success btn-sm flex-fill" onclick="exportExcel()"><i class="bi bi-file-earmark-excel-fill me-1"></i> Excel</button>
             <button class="btn btn-outline-dark btn-sm flex-fill" onclick="exportJSON()"><i class="bi bi-save me-1"></i> Backup</button>
             <label class="btn btn-outline-info btn-sm flex-fill m-0">
