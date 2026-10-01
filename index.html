@@ -1,1006 +1,871 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jurnal Praktik TBSM - SMK S AKP BERINGIN</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jurnal Praktik TBSM - SMK S AKP BERINGIN</title>
+  
+  <!-- Bootstrap 5 CSS & FontAwesome -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  
+  <!-- html2pdf.js & SheetJS (Excel) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+  <style>
+    :root {
+      --primary-color: #0d6efd;
+      --secondary-color: #0b5ed7;
+      --bg-light: #f8f9fa;
+    }
+
+    body {
+      background-color: var(--bg-light);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding-bottom: 50px;
+    }
+
+    .main-header {
+      background: linear-gradient(135deg, #0d6efd, #03346e);
+      color: white;
+      padding: 25px 0;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      border-bottom: 4px solid #ffc107;
+    }
+
+    .card {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      margin-bottom: 25px;
+    }
+
+    .card-header {
+      background-color: #ffffff;
+      border-bottom: 2px solid #f0f0f0;
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-radius: 12px 12px 0 0 !important;
+      padding: 15px 20px;
+    }
+
+    /* Form Inputs */
+    .form-control, .form-select {
+      border-radius: 8px;
+      padding: 10px 14px;
+    }
     
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- SheetJS for Excel Export -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <!-- html2pdf.js for Reliable PDF Generation with Images -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    .form-control:focus, .form-select:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+    }
 
-    <style>
-        :root {
-            --primary-navy: #0f172a;
-            --accent-red: #dc2626;
-            --accent-blue: #0284c7;
-            --accent-hover: #0369a1;
-            --bg-light: #f8fafc;
-            --card-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
-        }
+    /* Photo Grid UI */
+    .photo-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1px));
+      gap: 15px;
+    }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-light);
-            color: #334155;
-            padding-bottom: 50px;
-        }
+    .photo-card {
+      position: relative;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
 
-        /* Header Banner */
-        .header-card {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            color: white;
-            border-radius: 12px;
-            box-shadow: var(--card-shadow);
-            margin-bottom: 20px;
-            padding: 25px 20px;
-            text-align: center;
-            border-bottom: 4px solid var(--accent-red);
-        }
+    .photo-card img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+    }
 
-        .header-title {
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            font-size: 1.4rem;
-            text-transform: uppercase;
-        }
+    .photo-card .btn-remove {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background: rgba(220, 53, 69, 0.9);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      cursor: pointer;
+    }
 
-        .header-subtitle {
-            font-weight: 600;
-            font-size: 1.1rem;
-            color: #38bdf8;
-            margin-top: 4px;
-        }
+    /* Print Template Area */
+    #pdf-template {
+      background: white;
+      padding: 30px;
+      margin: 0 auto;
+      max-width: 900px;
+      color: #000;
+    }
 
-        .header-school {
-            font-weight: 500;
-            font-size: 1rem;
-            color: #94a3b8;
-        }
+    /* Table Formatting for Journal */
+    .journal-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      font-size: 13px;
+    }
 
-        /* Info Kelompok Banner Display */
-        .info-group-box {
-            background-color: #ffffff;
-            border: 2px solid #cbd5e1;
-            border-left: 5px solid var(--accent-blue);
-            border-radius: 10px;
-            padding: 16px 20px;
-            margin-bottom: 25px;
-            box-shadow: var(--card-shadow);
-        }
+    .journal-table th, .journal-table td {
+      border: 1px solid #000 !important;
+      padding: 8px 10px;
+      vertical-align: top;
+    }
 
-        .info-label {
-            font-weight: 600;
-            color: var(--primary-navy);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+    .journal-table th {
+      background-color: #d9e1f2 !important;
+      color: #000;
+      text-align: center;
+      font-weight: bold;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
 
-        .info-value {
-            font-size: 1.05rem;
-            color: #1e293b;
-            font-weight: 600;
-        }
+    /* PHOTO GRID SPECIFIC FOR PDF 2-COLUMN DISPLAY */
+    .photo-grid-2col {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      table-layout: fixed;
+    }
 
-        /* Card Customization */
-        .card {
-            border: none;
-            border-radius: 12px;
-            box-shadow: var(--card-shadow);
-            margin-bottom: 25px;
-        }
+    .photo-grid-2col td {
+      width: 50%;
+      padding: 8px;
+      vertical-align: top;
+      border: 1px solid #000 !important;
+      box-sizing: border-box;
+    }
 
-        .card-header {
-            background-color: #ffffff;
-            border-bottom: 2px solid #f1f5f9;
-            font-weight: 600;
-            color: var(--primary-navy);
-            padding: 16px 20px;
-            border-top-left-radius: 12px !important;
-            border-top-right-radius: 12px !important;
-        }
+    .photo-box {
+      text-align: center;
+      width: 100%;
+    }
 
-        .btn-primary {
-            background-color: var(--accent-blue);
-            border-color: var(--accent-blue);
-        }
+    .photo-box img {
+      width: 100%;
+      max-height: 240px;
+      object-fit: contain;
+      border: 1px solid #ccc;
+      display: block;
+      margin: 0 auto 6px auto;
+    }
 
-        .btn-primary:hover {
-            background-color: var(--accent-hover);
-            border-color: var(--accent-hover);
-        }
+    .photo-caption {
+      font-size: 12px;
+      font-weight: 600;
+      color: #333;
+      word-wrap: break-word;
+    }
 
-        /* Table Styling matching Word document */
-        .journal-table {
-            border: 2px solid #000 !important;
-            background-color: #ffffff;
-            width: 100%;
-        }
+    /* Custom Bullet Lists in Tables */
+    ul.table-list {
+      margin: 0;
+      padding-left: 18px;
+    }
 
-        .journal-table th, .journal-table td {
-            border: 1px solid #000 !important;
-            vertical-align: top;
-            padding: 8px 12px;
-            color: #000;
-        }
+    ul.table-list li {
+      margin-bottom: 3px;
+    }
 
-        .journal-table thead th {
-            background-color: #b4c6e7 !important;
-            text-align: center;
-            vertical-align: middle;
-            font-weight: 700;
-        }
+    /* Print Break Rules */
+    .page-break {
+      page-break-before: always;
+      break-before: page;
+    }
 
-        .list-bullet {
-            margin: 0;
-            padding-left: 18px;
-        }
+    .no-break {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
 
-        .list-bullet li {
-            margin-bottom: 3px;
-        }
-
-        /* Member Badge List */
-        .member-badge {
-            display: inline-block;
-            background-color: #e0f2fe;
-            color: #0369a1;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.88rem;
-            font-weight: 600;
-            margin-right: 6px;
-            margin-bottom: 6px;
-            border: 1px solid #bae6fd;
-        }
-
-        /* Photo Upload & Gallery Styling */
-        .photo-preview-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 12px;
-            margin-top: 10px;
-        }
-
-        .photo-card {
-            position: relative;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid #cbd5e1;
-            aspect-ratio: 1 / 1;
-            background-color: #e2e8f0;
-        }
-
-        .photo-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .photo-card .btn-remove {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: rgba(220, 38, 38, 0.9);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        /* Document Gallery Grid Layout */
-        .doc-gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            border: 2px solid #000;
-            padding: 15px;
-            background: #fff;
-        }
-
-        @media (min-width: 768px) {
-            .doc-gallery-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-
-        .doc-gallery-item {
-            border: 1px solid #000;
-            background: #fff;
-            display: flex;
-            flex-direction: column;
-            page-break-inside: avoid;
-            break-inside: avoid;
-        }
-
-        .doc-gallery-img-container {
-            width: 100%;
-            aspect-ratio: 4 / 3;
-            overflow: hidden;
-            background: #f1f5f9;
-        }
-
-        .doc-gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        .doc-gallery-caption {
-            padding: 6px 8px;
-            font-size: 0.8rem;
-            border-top: 1px solid #000;
-            background-color: #fff;
-            color: #000;
-            text-align: center;
-            font-weight: 500;
-        }
-
-        /* Print Specific Styling */
-        @media print {
-            body {
-                background-color: #fff !important;
-                color: #000 !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-
-            .no-print {
-                display: none !important;
-            }
-
-            .card {
-                box-shadow: none !important;
-                margin-bottom: 0 !important;
-                border: none !important;
-            }
-
-            .header-card {
-                background: none !important;
-                color: #000 !important;
-                box-shadow: none !important;
-                border-bottom: 2px solid #000;
-                border-radius: 0;
-                padding: 10px 0;
-            }
-
-            .header-title, .header-subtitle, .header-school {
-                color: #000 !important;
-            }
-
-            .info-group-box {
-                border: 2px solid #000 !important;
-                box-shadow: none !important;
-                border-left: 2px solid #000 !important;
-                margin-bottom: 15px !important;
-            }
-
-            .journal-table {
-                width: 100% !important;
-                page-break-inside: auto;
-            }
-
-            .journal-table tr {
-                page-break-inside: avoid;
-                page-break-after: auto;
-            }
-
-            .doc-gallery-grid {
-                grid-template-columns: repeat(2, 1fr) !important;
-                page-break-inside: avoid;
-            }
-
-            .doc-gallery-item img {
-                max-width: 100% !important;
-                height: auto !important;
-            }
-        }
-    </style>
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #pdf-template, #pdf-template * {
+        visibility: visible;
+      }
+      #pdf-template {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 0;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="container my-4" id="printableArea">
-        <!-- Main Header -->
-        <div class="header-card">
-            <div class="header-title">DOKUMENTASI KEGIATAN PRAKTIK</div>
-            <div class="header-subtitle">TEKNIK DAN BISNIS SEPEDA MOTOR (TBSM)</div>
-            <div class="header-school">SMK S AKP BERINGIN</div>
-        </div>
+  <!-- Header Application -->
+  <header class="main-header no-print">
+    <div class="container text-center">
+      <h2 class="fw-bold m-0"><i class="bi bi-journal-check me-2"></i>JURNAL PRAKTIK TBSM</h2>
+      <p class="lead m-0 fs-6 mt-1">SMK S AKP BERINGIN - Teknik & Bisnis Sepeda Motor</p>
+    </div>
+  </header>
 
-        <!-- Info Kelompok & Bengkel Display -->
-        <div class="info-group-box">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <span class="info-label"><i class="fa-solid fa-warehouse me-1"></i> Informasi Kelompok PKL / Bengkel</span>
-                <button class="btn btn-sm btn-outline-primary no-print" data-bs-toggle="modal" data-bs-target="#groupModal">
-                    <i class="fa-solid fa-pen-to-square me-1"></i> Edit Data Kelompok
-                </button>
-            </div>
-            <div class="row g-2">
-                <div class="col-md-4">
-                    <small class="text-muted d-block">Nama Bengkel / Tempat PKL:</small>
-                    <div class="info-value" id="displayWorkshopName">Belum Diisi</div>
-                </div>
-                <div class="col-md-4">
-                    <small class="text-muted d-block">Alamat / Lokasi Bengkel:</small>
-                    <div class="info-value" id="displayWorkshopAddress">Belum Diisi</div>
-                </div>
-                <div class="col-md-4">
-                    <small class="text-muted d-block">Pembimbing / Instruktur Bengkel:</small>
-                    <div class="info-value" id="displayMentorName">Belum Diisi</div>
-                </div>
-                <div class="col-12 mt-2">
-                    <small class="text-muted d-block mb-1">Anggota Kelompok:</small>
-                    <div id="displayMembersContainer">
-                        <span class="text-muted fst-italic">Belum ada anggota ditambahkan</span>
-                    </div>
-                </div>
-            </div>
+  <div class="container no-print">
+    
+    <!-- Profil Bengkel & Kelompok -->
+    <div class="card mb-4">
+      <div class="card-header d-flex align-items-center bg-primary text-white">
+        <i class="bi bi-house-gear-fill me-2 fs-5"></i> Identitas Bengkel & Kelompok
+      </div>
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Nama Bengkel Tempat Praktik</label>
+            <input type="text" id="inputNamaBengkel" class="form-control" placeholder="Contoh: Bengkel Hendra Jaya Motor" oninput="saveGroupProfile()">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Nama Kelompok / Anggota (Pisahkan dengan koma atau Enter)</label>
+            <textarea id="inputNamaKelompok" class="form-control" rows="2" placeholder="Contoh: 1. Ahmad Dani&#10;2. Budi Santoso&#10;3. Rian Ardianto" oninput="saveGroupProfile()"></textarea>
+          </div>
         </div>
-
-        <!-- Action Control Buttons -->
-        <div class="row mb-4 no-print align-items-center g-2">
-            <div class="col-lg-8 d-flex gap-2 flex-wrap">
-                <button class="btn btn-danger" onclick="downloadPDF()">
-                    <i class="fa-solid fa-file-pdf me-1"></i> Cetak PDF (Rapi + Foto)
-                </button>
-                <button class="btn btn-outline-danger" onclick="window.print()">
-                    <i class="fa-solid fa-print me-1"></i> Print Browser
-                </button>
-                <button class="btn btn-success" onclick="exportToExcel()">
-                    <i class="fa-solid fa-file-excel me-1"></i> Ekspor Excel
-                </button>
-                <button class="btn btn-secondary" onclick="backupJSON()">
-                    <i class="fa-solid fa-download me-1"></i> Backup JSON
-                </button>
-                <label class="btn btn-outline-secondary mb-0">
-                    <i class="fa-solid fa-upload me-1"></i> Restore JSON
-                    <input type="file" id="importJsonInput" accept=".json" style="display: none;" onchange="restoreJSON(event)">
-                </label>
-            </div>
-            <div class="col-lg-4">
-                <div class="input-group">
-                    <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
-                    <input type="text" id="searchInput" class="form-control" placeholder="Cari Motor, Kerusakan, Kegiatan..." onkeyup="filterJournal()">
-                </div>
-            </div>
-        </div>
-
-        <!-- Entry Input Form -->
-        <div class="card no-print">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <span><i class="fa-solid fa-plus-circle me-2"></i>Tambah Entry Jurnal Praktik Baru</span>
-                <span class="badge bg-primary" id="entryCountBadge">0 Entry</span>
-            </div>
-            <div class="card-body">
-                <form id="journalForm" onsubmit="handleFormSubmit(event)">
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <label for="entryDate" class="form-label fw-semibold">Hari & Tanggal</label>
-                            <input type="date" class="form-control" id="entryDate" required>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="entryCount" class="form-label fw-semibold">Jumlah (Unit)</label>
-                            <input type="text" class="form-control" id="entryCount" placeholder="Contoh: 3 Unit" required>
-                        </div>
-                        <div class="col-md-5">
-                            <label for="entryBrand" class="form-label fw-semibold">Merek & Tipe Motor (1 per baris)</label>
-                            <textarea class="form-control" id="entryBrand" rows="3" placeholder="Honda Supra X&#10;Honda Scoopy&#10;Honda Vario 125" required></textarea>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="entryDamage" class="form-label fw-semibold">Kerusakan Motor</label>
-                            <textarea class="form-control" id="entryDamage" rows="3" placeholder="Contoh: Motor brebet, Lampu redup, Rem blong" required></textarea>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="entryService" class="form-label fw-semibold">Kegiatan Servis (1 per baris)</label>
-                            <textarea class="form-control" id="entryService" rows="3" placeholder="Ganti Oli&#10;Servis Karburator&#10;Ganti gigi tarik&#10;Ganti Olisel shok" required></textarea>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label fw-semibold">Upload Foto Dokumentasi Praktik</label>
-                            <input type="file" class="form-control" id="photoInput" accept="image/*" multiple onchange="handlePhotoUpload(event)">
-                            <small class="text-muted">Foto dikompresi & disimpan di browser untuk dimasukkan ke laporan cetak/PDF.</small>
-                            <div class="photo-preview-grid" id="photoPreviewContainer"></div>
-                        </div>
-                        <div class="col-12 text-end mt-4">
-                            <button type="button" class="btn btn-light me-2" onclick="resetForm()">Reset Form</button>
-                            <button type="submit" class="btn btn-primary px-4"><i class="fa-solid fa-save me-1"></i> Simpan ke Jurnal</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Journal Table Display -->
-        <div class="card">
-            <div class="card-header no-print d-flex justify-content-between align-items-center">
-                <span><i class="fa-solid fa-table me-2"></i>Laporan Kegiatan Praktik di Bengkel</span>
-                <button class="btn btn-sm btn-outline-danger" onclick="clearAllData()">
-                    <i class="fa-solid fa-trash me-1"></i> Hapus Semua Data
-                </button>
-            </div>
-            <div class="card-body p-0 p-md-3">
-                <div class="table-responsive">
-                    <table class="table journal-table align-middle" id="journalTable">
-                        <thead>
-                            <tr>
-                                <th rowspan="2" style="width: 45px;">No</th>
-                                <th rowspan="2" style="width: 170px;">Hari & Tanggal</th>
-                                <th colspan="4">Laporan Kegiatan Praktik di Bengkel</th>
-                                <th rowspan="2" class="no-print" style="width: 80px;">Aksi</th>
-                            </tr>
-                            <tr>
-                                <th style="width: 85px;">Jumlah</th>
-                                <th style="width: 220px;">Merek & Tipe</th>
-                                <th style="width: 200px;">Kerusakan</th>
-                                <th>Kegiatan Servis</th>
-                            </tr>
-                        </thead>
-                        <tbody id="journalTableBody">
-                            <!-- Dynamic Content -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Documentation Photo Gallery Section -->
-        <div class="card mt-4">
-            <div class="card-header no-print d-flex justify-content-between align-items-center">
-                <span><i class="fa-solid fa-camera me-2"></i>Galeri Dokumentasi Foto Kegiatan Praktik</span>
-                <small class="text-muted">Semua foto di bawah ini akan muncul di PDF / Hasil Cetak</small>
-            </div>
-            <div class="card-body">
-                <div class="text-center mb-3">
-                    <h5 class="fw-bold text-uppercase m-0">DOKUMENTASI KEGIATAN PRAKTIK</h5>
-                    <h6 class="fw-bold text-uppercase m-0">TEKNIK DAN BISNIS SEPEDA MOTOR (TBSM)</h6>
-                    <h6 class="fw-bold text-uppercase m-0">SMK S AKP BERINGIN</h6>
-                </div>
-                <div class="doc-gallery-grid" id="docGalleryGrid">
-                    <!-- Dynamic Gallery Items -->
-                </div>
-            </div>
-        </div>
-
+      </div>
     </div>
 
-    <!-- Edit Group Modal -->
-    <div class="modal fade" id="groupModal" tabindex="-1" aria-labelledby="groupModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="groupModalLabel"><i class="fa-solid fa-users me-2"></i>Data Kelompok & Bengkel</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="groupForm" onsubmit="saveGroupData(event)">
-                        <div class="mb-3">
-                            <label for="workshopInput" class="form-label fw-semibold">Nama Bengkel / Tempat PKL</label>
-                            <input type="text" class="form-control" id="workshopInput" placeholder="Contoh: Bengkel AHASS Motor / Bengkel Maju Jaya" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="workshopAddressInput" class="form-label fw-semibold">Alamat / Lokasi Bengkel</label>
-                            <input type="text" class="form-control" id="workshopAddressInput" placeholder="Contoh: Jl. Lintas Medan - Lubuk Pakam">
-                        </div>
-                        <div class="mb-3">
-                            <label for="mentorInput" class="form-label fw-semibold">Nama Pembimbing / Instruktur Bengkel</label>
-                            <input type="text" class="form-control" id="mentorInput" placeholder="Contoh: Pak Budi / Mas Agus">
-                        </div>
-                        <div class="mb-3">
-                            <label for="membersInput" class="form-label fw-semibold">Nama Anggota Kelompok (1 Nama per Baris)</label>
-                            <textarea class="form-control" id="membersInput" rows="4" placeholder="Contoh:&#10;Ahmad Dahlan&#10;Rizky Pratama&#10;Siti Nurhaliza" required></textarea>
-                            <small class="text-muted">Tulis nama-nama siswa yang ada di dalam 1 kelompok bengkel ini.</small>
-                        </div>
-                        <div class="modal-footer px-0 pb-0">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check me-1"></i> Simpan Informasi</button>
-                        </div>
-                    </form>
-                </div>
+    <!-- Form Input Kegiatan Harian -->
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span><i class="bi bi-pencil-square me-2 text-primary"></i> Input Laporan Kegiatan Harian</span>
+        <button class="btn btn-sm btn-outline-secondary" onclick="resetForm()"><i class="bi bi-arrow-counterclockwise"></i> Reset Form</button>
+      </div>
+      <div class="card-body">
+        <form id="journalForm">
+          <input type="hidden" id="editIndex" value="-1">
+          
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Hari & Tanggal</label>
+              <input type="date" id="inputTanggal" class="form-control" required>
             </div>
-        </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Jumlah Sepeda Motor (Unit)</label>
+              <input type="number" id="inputJumlah" class="form-control" placeholder="Contoh: 3" min="1" required>
+            </div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Merek & Tipe Sepeda Motor</label>
+              <small class="text-muted d-block mb-1">Gunakan enter/baris baru per motor</small>
+              <textarea id="inputMerek" class="form-control" rows="3" placeholder="Honda Supra X&#10;Honda Scoopy&#10;Honda Vario 125" required></textarea>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Kerusakan / Keluhan</label>
+              <small class="text-muted d-block mb-1">Gunakan enter/baris baru per poin</small>
+              <textarea id="inputKerusakan" class="form-control" rows="3" placeholder="Motor brebet&#10;Oli bocor&#10;Lampu depan mati" required></textarea>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Kegiatan Servis / Perbaikan</label>
+              <small class="text-muted d-block mb-1">Gunakan enter/baris baru per poin</small>
+              <textarea id="inputServis" class="form-control" rows="3" placeholder="Ganti Oli&#10;Servis Karburator&#10;Ganti gigi tarek" required></textarea>
+            </div>
+          </div>
+
+          <button type="submit" id="btnSubmitJournal" class="btn btn-primary w-100 py-2 fw-semibold">
+            <i class="bi bi-plus-circle me-1"></i> Tambah Kegiatan ke Jurnal
+          </button>
+        </form>
+      </div>
     </div>
 
-    <!-- Bootstrap 5 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Upload Foto Dokumentasi -->
+    <div class="card mb-4">
+      <div class="card-header d-flex align-items-center">
+        <i class="bi bi-camera-fill me-2 text-primary"></i> Upload Dokumentasi Foto Praktik
+      </div>
+      <div class="card-body">
+        <div class="row g-3 align-items-end mb-3">
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Pilih Foto (Kamera HP / Galeri)</label>
+            <input type="file" id="inputFotoFile" class="form-control" accept="image/*" capture="environment">
+            <small class="text-muted">Foto akan otomatis diperkecil agar pengunduhan PDF lancar di HP.</small>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Keterangan Foto (Opsional)</label>
+            <input type="text" id="inputFotoKet" class="form-control" placeholder="Contoh: Praktik Servis Karburator">
+          </div>
+          <div class="col-md-2">
+            <button class="btn btn-success w-100" onclick="uploadFoto()"><i class="bi bi-upload"></i> Upload</button>
+          </div>
+        </div>
 
-    <script>
-        // State Management
-        let journalEntries = [];
-        let uploadedPhotos = []; // Array of Objects: { id, src, caption, date }
-        let currentTempPhotos = [];
-        let groupInfo = {
-            workshopName: "Bengkel Sepeda Motor Utama",
-            workshopAddress: "Beringin, Deli Serdang",
-            mentorName: "Pembimbing Lapangan",
-            members: ["Siswa 1", "Siswa 2"]
+        <!-- Preview Foto Terupload -->
+        <h6 class="fw-bold mt-4 mb-2">Daftar Foto Dokumentasi (<span id="photoCount">0</span>):</h6>
+        <div id="photoPreviewGrid" class="photo-preview-grid">
+          <p class="text-muted fst-italic fs-7">Belum ada foto yang diupload.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toolbar Aksi Export & Download -->
+    <div class="card mb-4 bg-light border">
+      <div class="card-body">
+        <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
+          <div>
+            <h6 class="m-0 fw-bold"><i class="bi bi-download me-1"></i> Cetak / Simpan Laporan</h6>
+            <small class="text-muted">Gunakan tombol di bawah untuk mengunduh PDF atau Cetak via HP/Laptop</small>
+          </div>
+          <div class="d-flex flex-wrap gap-2">
+            <button class="btn btn-danger" onclick="generatePDF()"><i class="bi bi-file-earmark-pdf-fill me-1"></i> Unduh PDF Direct</button>
+            <button class="btn btn-secondary" onclick="triggerPrint()"><i class="bi bi-printer-fill me-1"></i> Cetak / Simpan PDF HP</button>
+            <button class="btn btn-success" onclick="exportExcel()"><i class="bi bi-file-earmark-excel-fill me-1"></i> Export Excel</button>
+            <button class="btn btn-outline-dark" onclick="exportJSON()"><i class="bi bi-save me-1"></i> Backup Data</button>
+            <label class="btn btn-outline-info m-0">
+              <i class="bi bi-upload me-1"></i> Restore Data
+              <input type="file" id="restoreFile" accept=".json" style="display:none;" onchange="importJSON(event)">
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabel Monitoring Jurnal -->
+    <div class="card mb-5">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span><i class="bi bi-table me-2 text-primary"></i> Data Jurnal Kegiatan Terinput</span>
+        <button class="btn btn-sm btn-outline-danger" onclick="clearAllData()"><i class="bi bi-trash"></i> Hapus Semua Data</button>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover table-striped align-middle m-0">
+            <thead class="table-dark">
+              <tr>
+                <th width="5%" class="text-center">No</th>
+                <th width="15%">Hari & Tanggal</th>
+                <th width="10%" class="text-center">Jumlah</th>
+                <th width="20%">Merek & Tipe</th>
+                <th width="20%">Kerusakan</th>
+                <th width="20%">Kegiatan Servis</th>
+                <th width="10%" class="text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="journalTableBody">
+              <tr>
+                <td colspan="7" class="text-center text-muted py-4">Belum ada data jurnal. Silahkan tambahkan kegiatan di atas.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- AREA TEMPLATE CETAK / PDF (Tampilan Sesuai Format Word) -->
+  <div id="pdf-template">
+    
+    <!-- Kop Header Surat PDF -->
+    <div class="text-center mb-3">
+      <h3 class="fw-bold mb-1" style="font-size: 18px;">LAPORAN KEGIATAN PRAKTIK BENGKEL</h3>
+      <h3 class="fw-bold mb-1" style="font-size: 16px;">TEKNIK DAN BISNIS SEPEDA MOTOR (TBSM)</h3>
+      <h4 class="fw-bold mb-3" style="font-size: 16px;">SMK S AKP BERINGIN</h4>
+      <hr style="border-top: 2px solid #000; opacity: 1; margin: 10px 0;">
+    </div>
+
+    <!-- Informasi Bengkel & Kelompok di PDF -->
+    <div class="mb-3" style="font-size: 13px;">
+      <table style="width: 100%; border: none;">
+        <tr>
+          <td style="width: 130px; font-weight: bold; padding: 2px 0;">Nama Bengkel</td>
+          <td style="width: 10px; padding: 2px 0;">:</td>
+          <td style="padding: 2px 0;" id="pdfNamaBengkel">-</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold; padding: 2px 0; vertical-align: top;">Nama Kelompok / Anggota</td>
+          <td style="padding: 2px 0; vertical-align: top;">:</td>
+          <td style="padding: 2px 0;" id="pdfNamaKelompok">-</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Tabel Jurnal Utama (Sesuai Word) -->
+    <table class="journal-table mb-4">
+      <thead>
+        <tr>
+          <th width="5%" rowspan="2" style="vertical-align: middle;">No</th>
+          <th width="20%" rowspan="2" style="vertical-align: middle;">Hari & Tanggal</th>
+          <th colspan="4">Laporan Kegiatan Praktik di Bengkel</th>
+        </tr>
+        <tr>
+          <th width="12%">Jumlah</th>
+          <th width="21%">Merek & Tipe</th>
+          <th width="21%">Kerusakan</th>
+          <th width="21%">Kegiatan Servis</th>
+        </tr>
+      </thead>
+      <tbody id="pdfJournalBody">
+        <!-- Will be populated dynamically -->
+      </tbody>
+    </table>
+
+    <!-- HALAMAN BARU: DOKUMENTASI FOTO (Strict 2 Columns Grid) -->
+    <div class="page-break"></div>
+
+    <div class="text-center mb-4 pt-2">
+      <h3 class="fw-bold mb-1" style="font-size: 16px;">DOKUMENTASI KEGIATAN PRAKTIK</h3>
+      <h3 class="fw-bold mb-1" style="font-size: 15px;">TEKNIK DAN BISNIS SEPEDA MOTOR (TBSM)</h3>
+      <h4 class="fw-bold mb-3" style="font-size: 15px;">SMK S AKP BERINGIN</h4>
+      <hr style="border-top: 2px solid #000; opacity: 1; margin: 10px 0;">
+    </div>
+
+    <!-- Tabel Grid 2 Kolom untuk Foto agar Rapi dan Tidak Kebawah -->
+    <table class="photo-grid-2col" id="pdfPhotoTableGrid">
+      <tbody id="pdfPhotoBody">
+        <!-- Will be populated dynamically 2 items per row -->
+      </tbody>
+    </table>
+
+  </div>
+
+  <script>
+    // State App
+    let journalEntries = [];
+    let photoEntries = [];
+    let groupProfile = { namaBengkel: '', namaKelompok: '' };
+
+    // Format Tanggal Indonesia
+    function formatTanggalIndo(dateStr) {
+      if(!dateStr) return '';
+      const date = new Date(dateStr);
+      const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+      const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+      
+      const dayName = days[date.getDay()];
+      const dayNum = date.getDate();
+      const monthName = months[date.getMonth()];
+      const year = date.getFullYear();
+
+      return `${dayName}, ${dayNum} ${monthName} ${year}`;
+    }
+
+    // Load Data
+    window.addEventListener('DOMContentLoaded', () => {
+      loadStorageData();
+      renderAll();
+    });
+
+    function loadStorageData() {
+      const savedGroup = localStorage.getItem('tbsm_group');
+      if(savedGroup) {
+        groupProfile = JSON.parse(savedGroup);
+        document.getElementById('inputNamaBengkel').value = groupProfile.namaBengkel || '';
+        document.getElementById('inputNamaKelompok').value = groupProfile.namaKelompok || '';
+      }
+
+      const savedJournal = localStorage.getItem('tbsm_journal');
+      if(savedJournal) {
+        journalEntries = JSON.parse(savedJournal);
+      }
+
+      const savedPhotos = localStorage.getItem('tbsm_photos');
+      if(savedPhotos) {
+        photoEntries = JSON.parse(savedPhotos);
+      }
+    }
+
+    function saveGroupProfile() {
+      groupProfile.namaBengkel = document.getElementById('inputNamaBengkel').value;
+      groupProfile.namaKelompok = document.getElementById('inputNamaKelompok').value;
+      localStorage.setItem('tbsm_group', JSON.stringify(groupProfile));
+      renderPDFProfile();
+    }
+
+    // Submit / Edit Journal Entry
+    document.getElementById('journalForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const index = parseInt(document.getElementById('editIndex').value);
+      const entryData = {
+        tanggal: document.getElementById('inputTanggal').value,
+        jumlah: document.getElementById('inputJumlah').value,
+        merek: document.getElementById('inputMerek').value.trim(),
+        kerusakan: document.getElementById('inputKerusakan').value.trim(),
+        servis: document.getElementById('inputServis').value.trim()
+      };
+
+      if(index >= 0) {
+        journalEntries[index] = entryData;
+      } else {
+        journalEntries.push(entryData);
+      }
+
+      localStorage.setItem('tbsm_journal', JSON.stringify(journalEntries));
+      resetForm();
+      renderAll();
+    });
+
+    function resetForm() {
+      document.getElementById('journalForm').reset();
+      document.getElementById('editIndex').value = "-1";
+      document.getElementById('btnSubmitJournal').innerHTML = `<i class="bi bi-plus-circle me-1"></i> Tambah Kegiatan ke Jurnal`;
+    }
+
+    function editEntry(index) {
+      const item = journalEntries[index];
+      document.getElementById('editIndex').value = index;
+      document.getElementById('inputTanggal').value = item.tanggal;
+      document.getElementById('inputJumlah').value = item.jumlah;
+      document.getElementById('inputMerek').value = item.merek;
+      document.getElementById('inputKerusakan').value = item.kerusakan;
+      document.getElementById('inputServis').value = item.servis;
+
+      document.getElementById('btnSubmitJournal').innerHTML = `<i class="bi bi-check-circle me-1"></i> Simpan Perubahan Jurnal`;
+      window.scrollTo({ top: 150, behavior: 'smooth' });
+    }
+
+    function deleteEntry(index) {
+      if(confirm('Apakah Anda yakin ingin menghapus kegiatan ini?')) {
+        journalEntries.splice(index, 1);
+        localStorage.setItem('tbsm_journal', JSON.stringify(journalEntries));
+        renderAll();
+      }
+    }
+
+    // Upload & Compression Photo (Optimized for Mobile)
+    function uploadFoto() {
+      const fileInput = document.getElementById('inputFotoFile');
+      const captionInput = document.getElementById('inputFotoKet');
+
+      if (!fileInput.files || !fileInput.files[0]) {
+        alert('Silakan pilih foto terlebih dahulu!');
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          // Canvas compression setup (max 600px width for fast loading on HP and small LocalStorage footprint)
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          const maxWidth = 600;
+
+          if (width > maxWidth) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Compress to JPEG Quality 0.65
+          const compressedBase64 = canvas.toDataURL('image/jpeg', 0.65);
+
+          photoEntries.push({
+            id: Date.now(),
+            src: compressedBase64,
+            caption: captionInput.value.trim() || 'Foto Praktik'
+          });
+
+          localStorage.setItem('tbsm_photos', JSON.stringify(photoEntries));
+          fileInput.value = '';
+          captionInput.value = '';
+          renderPhotos();
         };
+        img.src = e.target.result;
+      };
 
-        const dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-        const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+      reader.readAsDataURL(file);
+    }
 
-        function formatDateIndonesian(dateString) {
-            if (!dateString) return "";
-            const date = new Date(dateString);
-            if (isNaN(date.getTime())) return dateString;
-            return `${dayNames[date.getDay()]}, ${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+    function deleteFoto(id) {
+      if(confirm('Hapus foto ini dari galeri?')) {
+        photoEntries = photoEntries.filter(p => p.id !== id);
+        localStorage.setItem('tbsm_photos', JSON.stringify(photoEntries));
+        renderPhotos();
+      }
+    }
+
+    // Format multiline array to HTML Bullet List
+    function formatBulletList(text) {
+      if (!text) return '-';
+      const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+      if (lines.length === 0) return '-';
+      if (lines.length === 1) return lines[0];
+
+      let html = '<ul class="table-list">';
+      lines.forEach(line => {
+        // Strip out existing dash or bullet
+        const cleanLine = line.replace(/^[•\-\*]\s*/, '');
+        html += `<li>${cleanLine}</li>`;
+      });
+      html += '</ul>';
+      return html;
+    }
+
+    // Render Functions
+    function renderAll() {
+      renderTableUI();
+      renderPhotos();
+      renderPDFProfile();
+      renderPDFJournal();
+    }
+
+    function renderTableUI() {
+      const tbody = document.getElementById('journalTableBody');
+      tbody.innerHTML = '';
+
+      if (journalEntries.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted py-4">Belum ada data jurnal terinput.</td></tr>`;
+        return;
+      }
+
+      journalEntries.forEach((item, idx) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="text-center fw-bold">${idx + 1}</td>
+          <td>${formatTanggalIndo(item.tanggal)}</td>
+          <td class="text-center fw-semibold">${item.jumlah} Unit</td>
+          <td>${formatBulletList(item.merek)}</td>
+          <td>${formatBulletList(item.kerusakan)}</td>
+          <td>${formatBulletList(item.servis)}</td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-outline-primary mb-1" onclick="editEntry(${idx})"><i class="bi bi-pencil"></i></button>
+            <button class="btn btn-sm btn-outline-danger mb-1" onclick="deleteEntry(${idx})"><i class="bi bi-trash"></i></button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderPhotos() {
+      const grid = document.getElementById('photoPreviewGrid');
+      document.getElementById('photoCount').innerText = photoEntries.length;
+      grid.innerHTML = '';
+
+      if (photoEntries.length === 0) {
+        grid.innerHTML = `<p class="text-muted fst-italic fs-7 m-0">Belum ada foto yang diupload.</p>`;
+        renderPDFPhotos();
+        return;
+      }
+
+      photoEntries.forEach(photo => {
+        const div = document.createElement('div');
+        div.className = 'photo-card';
+        div.innerHTML = `
+          <button class="btn-remove" onclick="deleteFoto(${photo.id})">&times;</button>
+          <img src="${photo.src}" alt="Dokumentasi">
+          <div class="p-2 text-center fs-7 text-truncate" title="${photo.caption}">${photo.caption}</div>
+        `;
+        grid.appendChild(div);
+      });
+
+      renderPDFPhotos();
+    }
+
+    function renderPDFProfile() {
+      document.getElementById('pdfNamaBengkel').innerText = groupProfile.namaBengkel || '-';
+      
+      const kelompokText = groupProfile.namaKelompok || '-';
+      document.getElementById('pdfNamaKelompok').innerHTML = kelompokText.replace(/\n/g, '<br>');
+    }
+
+    function renderPDFJournal() {
+      const pdfBody = document.getElementById('pdfJournalBody');
+      pdfBody.innerHTML = '';
+
+      if (journalEntries.length === 0) {
+        pdfBody.innerHTML = `<tr><td colspan="6" class="text-center py-3">Belum ada data jurnal.</td></tr>`;
+        return;
+      }
+
+      journalEntries.forEach((item, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = 'no-break';
+        tr.innerHTML = `
+          <td class="text-center">${idx + 1}</td>
+          <td>${formatTanggalIndo(item.tanggal)}</td>
+          <td class="text-center">${item.jumlah} Unit</td>
+          <td>${formatBulletList(item.merek)}</td>
+          <td>${formatBulletList(item.kerusakan)}</td>
+          <td>${formatBulletList(item.servis)}</td>
+        `;
+        pdfBody.appendChild(tr);
+      });
+    }
+
+    // STRICT 2-COLUMN TABLE GRID FOR PDF PHOTO GALLERY
+    function renderPDFPhotos() {
+      const photoGridBody = document.getElementById('pdfPhotoBody');
+      photoGridBody.innerHTML = '';
+
+      if (photoEntries.length === 0) {
+        photoGridBody.innerHTML = `<tr><td colspan="2" class="text-center text-muted py-4">Belum ada foto dokumentasi.</td></tr>`;
+        return;
+      }
+
+      // Group photos in pairs of 2 for strict 2-column table rows
+      for (let i = 0; i < photoEntries.length; i += 2) {
+        const tr = document.createElement('tr');
+        tr.className = 'no-break';
+
+        const photo1 = photoEntries[i];
+        const photo2 = photoEntries[i + 1];
+
+        let cell1HTML = `
+          <div class="photo-box">
+            <img src="${photo1.src}">
+            <div class="photo-caption">${photo1.caption}</div>
+          </div>
+        `;
+
+        let cell2HTML = '';
+        if (photo2) {
+          cell2HTML = `
+            <div class="photo-box">
+              <img src="${photo2.src}">
+              <div class="photo-caption">${photo2.caption}</div>
+            </div>
+          `;
+        } else {
+          cell2HTML = `<div></div>`; // Empty cell if odd number of photos
         }
 
-        // Initialize Application
-        window.onload = function() {
-            loadFromLocalStorage();
-            renderGroupInfo();
-            renderTable();
-            renderGallery();
-        };
+        tr.innerHTML = `
+          <td>${cell1HTML}</td>
+          <td>${cell2HTML}</td>
+        `;
 
-        // Storage Operations
-        function saveToLocalStorage() {
-            try {
-                localStorage.setItem('tsm_journal_data', JSON.stringify(journalEntries));
-                localStorage.setItem('tsm_journal_photos', JSON.stringify(uploadedPhotos));
-                localStorage.setItem('tsm_group_info', JSON.stringify(groupInfo));
-            } catch (e) {
-                alert("Penyimpanan lokal penuh. Harap kurangi jumlah foto atau gunakan ukuran foto yang lebih kecil.");
-            }
+        photoGridBody.appendChild(tr);
+      }
+    }
+
+    // CLEAR ALL DATA
+    function clearAllData() {
+      if(confirm('Apakah Anda yakin ingin menghapus SELURUH data jurnal & foto? Data yang dihapus tidak dapat dikembalikan!')) {
+        journalEntries = [];
+        photoEntries = [];
+        groupProfile = { namaBengkel: '', namaKelompok: '' };
+        localStorage.removeItem('tbsm_journal');
+        localStorage.removeItem('tbsm_photos');
+        localStorage.removeItem('tbsm_group');
+
+        document.getElementById('inputNamaBengkel').value = '';
+        document.getElementById('inputNamaKelompok').value = '';
+        resetForm();
+        renderAll();
+      }
+    }
+
+    // EXPORT TO EXCEL
+    function exportExcel() {
+      if (journalEntries.length === 0) {
+        alert('Tidak ada data jurnal untuk diexport!');
+        return;
+      }
+
+      const dataExcel = journalEntries.map((item, idx) => ({
+        'No': idx + 1,
+        'Hari & Tanggal': formatTanggalIndo(item.tanggal),
+        'Jumlah (Unit)': `${item.jumlah} Unit`,
+        'Merek & Tipe': item.merek,
+        'Kerusakan': item.kerusakan,
+        'Kegiatan Servis': item.servis
+      }));
+
+      const worksheet = XLSX.utils.json_to_sheet(dataExcel);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Jurnal TBSM");
+
+      const bklName = (groupProfile.namaBengkel || 'TBSM').replace(/[^a-zA-Z0-0]/g, '_');
+      XLSX.writeFile(workbook, `Jurnal_TBSM_${bklName}.xlsx`);
+    }
+
+    // BACKUP JSON
+    function exportJSON() {
+      const backupData = {
+        groupProfile,
+        journalEntries,
+        photoEntries
+      };
+
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      const bklName = (groupProfile.namaBengkel || 'TBSM').replace(/[^a-zA-Z0-0]/g, '_');
+      downloadAnchor.setAttribute("download", `Backup_Jurnal_TBSM_${bklName}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    // RESTORE JSON
+    function importJSON(event) {
+      const fileReader = new FileReader();
+      fileReader.onload = function(e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          if (parsed.journalEntries && parsed.photoEntries) {
+            journalEntries = parsed.journalEntries;
+            photoEntries = parsed.photoEntries;
+            groupProfile = parsed.groupProfile || { namaBengkel: '', namaKelompok: '' };
+
+            localStorage.setItem('tbsm_journal', JSON.stringify(journalEntries));
+            localStorage.setItem('tbsm_photos', JSON.stringify(photoEntries));
+            localStorage.setItem('tbsm_group', JSON.stringify(groupProfile));
+
+            document.getElementById('inputNamaBengkel').value = groupProfile.namaBengkel || '';
+            document.getElementById('inputNamaKelompok').value = groupProfile.namaKelompok || '';
+
+            renderAll();
+            alert('Data berhasil dipulihkan!');
+          } else {
+            alert('Format file backup JSON tidak valid!');
+          }
+        } catch(err) {
+          alert('Gagal membaca file JSON!');
         }
+      };
+      fileReader.readAsText(event.target.files[0]);
+    }
 
-        function loadFromLocalStorage() {
-            const savedData = localStorage.getItem('tsm_journal_data');
-            const savedPhotos = localStorage.getItem('tsm_journal_photos');
-            const savedGroup = localStorage.getItem('tsm_group_info');
-            
-            if (savedGroup) {
-                groupInfo = JSON.parse(savedGroup);
-            }
+    // GENERATE PDF (html2pdf.js) Direct Download
+    function generatePDF() {
+      const element = document.getElementById('pdf-template');
+      const bklName = (groupProfile.namaBengkel || 'TBSM').replace(/[^a-zA-Z0-0]/g, '_');
+      
+      const opt = {
+        margin:       [10, 10, 10, 10],
+        filename:     `Jurnal_TBSM_${bklName}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak:    { mode: ['css', 'legacy'] }
+      };
 
-            if (savedData) {
-                journalEntries = JSON.parse(savedData);
-            } else {
-                // Default Sample Data
-                journalEntries = [
-                    {
-                        id: 1,
-                        date: "2026-09-28",
-                        count: "3 Unit",
-                        brand: "Honda Supra X\nHonda Scoopy\nHonda Vario 125",
-                        damage: "Motor brebet",
-                        service: "Ganti Oli\nServis Karburator\nGanti gigi tarik\nGanti Olisel shok"
-                    },
-                    {
-                        id: 2,
-                        date: "2026-09-29",
-                        count: "2 Unit",
-                        brand: "Yamaha Mio J\nHonda Beat",
-                        damage: "Rem blong & CVT kasar",
-                        service: "Ganti Kampas Rem\nServis CVT"
-                    }
-                ];
-            }
+      html2pdf().set(opt).from(element).save();
+    }
 
-            if (savedPhotos) {
-                uploadedPhotos = JSON.parse(savedPhotos);
-            }
-        }
-
-        function renderGroupInfo() {
-            document.getElementById('displayWorkshopName').innerText = groupInfo.workshopName || "Belum Diisi";
-            document.getElementById('displayWorkshopAddress').innerText = groupInfo.workshopAddress || "Belum Diisi";
-            document.getElementById('displayMentorName').innerText = groupInfo.mentorName || "Belum Diisi";
-            
-            const membersContainer = document.getElementById('displayMembersContainer');
-            membersContainer.innerHTML = '';
-
-            if (groupInfo.members && groupInfo.members.length > 0) {
-                groupInfo.members.forEach(member => {
-                    if (member.trim() !== '') {
-                        const badge = document.createElement('span');
-                        badge.className = 'member-badge';
-                        badge.innerHTML = `<i class="fa-solid fa-user me-1"></i>${escapeHtml(member)}`;
-                        membersContainer.appendChild(badge);
-                    }
-                });
-            } else {
-                membersContainer.innerHTML = '<span class="text-muted fst-italic">Belum ada anggota kelompok</span>';
-            }
-
-            // Sync inputs in Modal
-            document.getElementById('workshopInput').value = groupInfo.workshopName || '';
-            document.getElementById('workshopAddressInput').value = groupInfo.workshopAddress || '';
-            document.getElementById('mentorInput').value = groupInfo.mentorName || '';
-            document.getElementById('membersInput').value = groupInfo.members ? groupInfo.members.join('\n') : '';
-        }
-
-        function saveGroupData(event) {
-            event.preventDefault();
-            const wName = document.getElementById('workshopInput').value.trim();
-            const wAddr = document.getElementById('workshopAddressInput').value.trim();
-            const mName = document.getElementById('mentorInput').value.trim();
-            const membersText = document.getElementById('membersInput').value;
-
-            const memberList = membersText.split('\n').map(m => m.trim()).filter(m => m !== '');
-
-            groupInfo = {
-                workshopName: wName,
-                workshopAddress: wAddr,
-                mentorName: mName,
-                members: memberList
-            };
-
-            saveToLocalStorage();
-            renderGroupInfo();
-
-            const modalEl = document.getElementById('groupModal');
-            const modal = bootstrap.Modal.getInstance(modalEl);
-            if (modal) modal.hide();
-        }
-
-        // Image Processing & Compression
-        function handlePhotoUpload(event) {
-            const files = event.target.files;
-            if (!files || files.length === 0) return;
-
-            Array.from(files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    compressImage(e.target.result, 1000, 0.75, function(compressedSrc) {
-                        currentTempPhotos.push({
-                            id: Date.now() + Math.random(),
-                            src: compressedSrc,
-                            caption: "Praktik " + (file.name.split('.')[0] || "Bengkel")
-                        });
-                        renderPhotoPreviews();
-                    });
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
-        function compressImage(base64Str, maxWidth, quality, callback) {
-            const img = new Image();
-            img.src = base64Str;
-            img.onload = function() {
-                const canvas = document.createElement('canvas');
-                let width = img.width;
-                let height = img.height;
-
-                if (width > maxWidth) {
-                    height = Math.round((height * maxWidth) / width);
-                    width = maxWidth;
-                }
-
-                canvas.width = width;
-                canvas.height = height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, width, height);
-                callback(canvas.toDataURL('image/jpeg', quality));
-            };
-        }
-
-        function renderPhotoPreviews() {
-            const container = document.getElementById('photoPreviewContainer');
-            container.innerHTML = '';
-            currentTempPhotos.forEach((item, index) => {
-                const photoCard = document.createElement('div');
-                photoCard.className = 'photo-card';
-                photoCard.innerHTML = `
-                    <img src="${item.src}" alt="Dokumentasi">
-                    <button type="button" class="btn-remove" onclick="removeTempPhoto(${index})">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                `;
-                container.appendChild(photoCard);
-            });
-        }
-
-        function removeTempPhoto(index) {
-            currentTempPhotos.splice(index, 1);
-            renderPhotoPreviews();
-        }
-
-        function removeSavedPhoto(id) {
-            if (confirm("Hapus foto ini dari galeri dokumentasi?")) {
-                uploadedPhotos = uploadedPhotos.filter(item => item.id !== id);
-                saveToLocalStorage();
-                renderGallery();
-            }
-        }
-
-        function updatePhotoCaption(id, newCaption) {
-            const photo = uploadedPhotos.find(p => p.id === id);
-            if (photo) {
-                photo.caption = newCaption;
-                saveToLocalStorage();
-            }
-        }
-
-        function handleFormSubmit(event) {
-            event.preventDefault();
-            
-            const dateVal = document.getElementById('entryDate').value;
-            const countVal = document.getElementById('entryCount').value;
-            const brandVal = document.getElementById('entryBrand').value;
-            const damageVal = document.getElementById('entryDamage').value;
-            const serviceVal = document.getElementById('entryService').value;
-
-            const newEntry = {
-                id: Date.now(),
-                date: dateVal,
-                count: countVal,
-                brand: brandVal,
-                damage: damageVal,
-                service: serviceVal
-            };
-
-            journalEntries.push(newEntry);
-
-            if (currentTempPhotos.length > 0) {
-                uploadedPhotos = uploadedPhotos.concat(currentTempPhotos);
-                currentTempPhotos = [];
-                renderPhotoPreviews();
-            }
-
-            saveToLocalStorage();
-            renderTable();
-            renderGallery();
-            resetForm();
-        }
-
-        function resetForm() {
-            document.getElementById('journalForm').reset();
-            currentTempPhotos = [];
-            renderPhotoPreviews();
-        }
-
-        function renderTable(filterKeyword = "") {
-            const tbody = document.getElementById('journalTableBody');
-            tbody.innerHTML = '';
-
-            const filtered = journalEntries.filter(item => {
-                if (!filterKeyword) return true;
-                const kw = filterKeyword.toLowerCase();
-                return (
-                    formatDateIndonesian(item.date).toLowerCase().includes(kw) ||
-                    item.brand.toLowerCase().includes(kw) ||
-                    item.damage.toLowerCase().includes(kw) ||
-                    item.service.toLowerCase().includes(kw)
-                );
-            });
-
-            document.getElementById('entryCountBadge').innerText = `${filtered.length} Entry`;
-
-            if (filtered.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="7" class="text-center py-4 text-muted">Belum ada data jurnal praktik. Silakan isi form di atas.</td>
-                    </tr>
-                `;
-                return;
-            }
-
-            filtered.forEach((item, index) => {
-                const tr = document.createElement('tr');
-                
-                const brandItems = item.brand.split('\n').filter(i => i.trim() !== '');
-                let brandHtml = brandItems.length > 1
-                    ? `<ul class="list-bullet">${brandItems.map(b => `<li>${escapeHtml(b)}</li>`).join('')}</ul>`
-                    : escapeHtml(item.brand);
-
-                const serviceItems = item.service.split('\n').filter(i => i.trim() !== '');
-                let serviceHtml = serviceItems.length > 1
-                    ? `<ul class="list-bullet">${serviceItems.map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ul>`
-                    : escapeHtml(item.service);
-
-                tr.innerHTML = `
-                    <td class="text-center fw-bold">${index + 1}</td>
-                    <td>${formatDateIndonesian(item.date)}</td>
-                    <td class="text-center fw-semibold">${escapeHtml(item.count)}</td>
-                    <td>${brandHtml}</td>
-                    <td>${escapeHtml(item.damage).replace(/\n/g, '<br>')}</td>
-                    <td>${serviceHtml}</td>
-                    <td class="text-center no-print">
-                        <button class="btn btn-sm btn-outline-danger" onclick="deleteEntry(${item.id})" title="Hapus">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function renderGallery() {
-            const grid = document.getElementById('docGalleryGrid');
-            grid.innerHTML = '';
-
-            const minBoxes = Math.max(4, uploadedPhotos.length);
-            for (let i = 0; i < minBoxes; i++) {
-                const item = document.createElement('div');
-                item.className = 'doc-gallery-item';
-                
-                if (uploadedPhotos[i]) {
-                    const photo = uploadedPhotos[i];
-                    item.innerHTML = `
-                        <div class="doc-gallery-img-container position-relative">
-                            <img src="${photo.src}" alt="Dokumentasi Praktik">
-                            <button type="button" class="btn-remove no-print position-absolute top-0 end-0 m-1 bg-danger text-white border-0 rounded-circle" style="width:22px;height:22px;font-size:10px;cursor:pointer;" onclick="removeSavedPhoto(${photo.id})">
-                                <i class="fa-solid fa-xmark"></i>
-                            </button>
-                        </div>
-                        <div class="doc-gallery-caption">
-                            <span class="no-print d-block mb-1 text-muted" style="font-size:10px;">Klik untuk ubah keterangan:</span>
-                            <span contenteditable="true" onblur="updatePhotoCaption(${photo.id}, this.innerText)" class="px-1 d-block">${escapeHtml(photo.caption || "Dokumentasi Praktik")}</span>
-                        </div>
-                    `;
-                } else {
-                    item.innerHTML = `
-                        <div class="doc-gallery-img-container d-flex align-items-center justify-content-center text-muted" style="min-height: 120px;">
-                            <small class="no-print">Foto Kosong</small>
-                        </div>
-                        <div class="doc-gallery-caption text-muted">
-                            <small>-</small>
-                        </div>
-                    `;
-                }
-                grid.appendChild(item);
-            }
-        }
-
-        function deleteEntry(id) {
-            if (confirm("Apakah Anda yakin ingin menghapus baris jurnal ini?")) {
-                journalEntries = journalEntries.filter(item => item.id !== id);
-                saveToLocalStorage();
-                renderTable();
-            }
-        }
-
-        function clearAllData() {
-            if (confirm("PERINGATAN: Semua data jurnal, foto, dan informasi kelompok akan dihapus permanen. Lanjutkan?")) {
-                journalEntries = [];
-                uploadedPhotos = [];
-                localStorage.removeItem('tsm_journal_data');
-                localStorage.removeItem('tsm_journal_photos');
-                renderTable();
-                renderGallery();
-            }
-        }
-
-        function filterJournal() {
-            const query = document.getElementById('searchInput').value;
-            renderTable(query);
-        }
-
-        function escapeHtml(text) {
-            return (text || '')
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
-
-        // PDF Generation via html2pdf.js
-        function downloadPDF() {
-            const element = document.getElementById('printableArea');
-            const opt = {
-                margin:       [10, 10, 10, 10],
-                filename:     `Jurnal_TBSM_${groupInfo.workshopName.replace(/\s+/g, '_')}.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true, logging: false },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' },
-                pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
-            };
-
-            // Hide action buttons during capture
-            const noPrintElements = document.querySelectorAll('.no-print');
-            noPrintElements.forEach(el => el.style.display = 'none');
-
-            html2pdf().set(opt).from(element).save().then(() => {
-                noPrintElements.forEach(el => el.style.display = '');
-            });
-        }
-
-        function exportToExcel() {
-            if (journalEntries.length === 0) {
-                alert("Tidak ada data jurnal untuk diekspor!");
-                return;
-            }
-
-            const headerInfo = [
-                ["DOKUMENTASI KEGIATAN PRAKTIK TBSM"],
-                ["SMK S AKP BERINGIN"],
-                ["Nama Bengkel:", groupInfo.workshopName],
-                ["Alamat Bengkel:", groupInfo.workshopAddress],
-                ["Pembimbing:", groupInfo.mentorName],
-                ["Anggota Kelompok:", groupInfo.members.join(", ")],
-                []
-            ];
-
-            const tableData = journalEntries.map((item, index) => ({
-                "No": index + 1,
-                "Hari & Tanggal": formatDateIndonesian(item.date),
-                "Jumlah": item.count,
-                "Merek & Tipe": item.brand.replace(/\n/g, ", "),
-                "Kerusakan": item.damage,
-                "Kegiatan Servis": item.service.replace(/\n/g, ", ")
-            }));
-
-            const worksheet = XLSX.utils.aoa_to_sheet(headerInfo);
-            XLSX.utils.sheet_add_json(worksheet, tableData, { origin: "A8" });
-
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Jurnal Praktik TBSM");
-            XLSX.writeFile(workbook, `Jurnal_TBSM_${groupInfo.workshopName.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}.xlsx`);
-        }
-
-        function backupJSON() {
-            const backupPayload = {
-                groupInfo: groupInfo,
-                entries: journalEntries,
-                photos: uploadedPhotos,
-                exportDate: new Date().toISOString()
-            };
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupPayload, null, 2));
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `Backup_Jurnal_TBSM_${new Date().toISOString().slice(0, 10)}.json`);
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
-        }
-
-        function restoreJSON(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const parsed = JSON.parse(e.target.result);
-                    if (parsed.entries && Array.isArray(parsed.entries)) {
-                        journalEntries = parsed.entries;
-                        uploadedPhotos = parsed.photos || [];
-                        if (parsed.groupInfo) groupInfo = parsed.groupInfo;
-
-                        saveToLocalStorage();
-                        renderGroupInfo();
-                        renderTable();
-                        renderGallery();
-                        alert("Data jurnal & foto dokumentasi berhasil dipulihkan!");
-                    } else {
-                        alert("Format JSON tidak sesuai!");
-                    }
-                } catch (err) {
-                    alert("Gagal mengimpor file JSON!");
-                }
-            };
-            reader.readAsText(file);
-        }
-    </script>
+    // TRIGGER PRINT FOR MOBILE BROWSER PRINT-TO-PDF
+    function triggerPrint() {
+      window.print();
+    }
+  </script>
 </body>
 </html>
-```
-
-### Cara Mengunggah ke GitHub Pages:
-1. Simpan kode di atas dengan nama file `index.html`.
-2. Buat repository baru di GitHub (misal: `jurnal-tbsm-akp`).
-3. Upload file `index.html` tersebut ke dalam repository.
-4. Buka **Settings** repository > Pilih menu **Pages** di sebelah kiri.
-5. Pada bagian **Branch**, pilih `main` atau `master` lalu klik **Save**.
-6. Website jurnal aplikasi siap diakses secara online oleh para siswa!
