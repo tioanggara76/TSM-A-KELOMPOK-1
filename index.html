@@ -52,6 +52,14 @@
       padding: 12px 16px;
     }
 
+    /* Input Terkunci / Readonly styling */
+    .form-control[readonly] {
+      background-color: #e9ecef !important;
+      cursor: not-allowed;
+      font-weight: 600;
+      color: #495057;
+    }
+
     /* Form Controls */
     .form-control, .btn {
       border-radius: 8px;
@@ -271,11 +279,11 @@
       </div>
     </div>
 
-    <!-- Form Input Kegiatan Harian -->
+    <!-- Form Input Kegiatan Harian (Tanggal Terkunci Realtime) -->
     <div class="card no-print">
       <div class="card-header d-flex justify-content-between align-items-center fs-6">
         <span><i class="bi bi-pencil-square me-2 text-primary"></i> Input Kegiatan Harian</span>
-        <button class="btn btn-sm btn-outline-secondary py-0 fs-7" onclick="resetForm()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+        <!-- <span class="badge bg-danger fs-8"><i class="bi bi-clock-fill me-1"></i>Tanggal Realtime Locked</span> -->
       </div>
       <div class="card-body">
         <form id="journalForm">
@@ -284,7 +292,7 @@
           <div class="row g-2 mb-2">
             <div class="col-7 col-md-6">
               <label class="form-label fw-semibold fs-7 mb-1">Hari & Tanggal</label>
-              <input type="date" id="inputTanggal" class="form-control form-control-sm" required>
+              <input type="date" id="inputTanggal" class="form-control form-control-sm" readonly required title="Tanggal terkunci otomatis ke hari ini">
             </div>
             <div class="col-5 col-md-6">
               <label class="form-label fw-semibold fs-7 mb-1">Jumlah Motor</label>
@@ -317,7 +325,7 @@
     <!-- Upload Foto Dokumentasi (Opsi Kamera vs Galeri) -->
     <div class="card no-print">
       <div class="card-header d-flex align-items-center fs-6">
-        <i class="bi bi-camera-fill me-2 text-primary"></i> Upload Foto Dokumentasi
+        <i class="bi bi-camera-fill me-2 text-primary"></i> Upload Foto Dokumentasi Praktik
       </div>
       <div class="card-body">
         
@@ -325,13 +333,13 @@
           <div class="col-12">
             <label class="form-label fw-semibold fs-7 mb-1">Pilih Mode Pengambilan Foto:</label>
             <div class="d-flex gap-2">
-              <label class="btn btn-outline-primary btn-sm flex-fill text-center m-0">
-                <i class="bi bi-camera me-1"></i> Foto Langsung (Kamera)
+              <label class="btn btn-outline-primary btn-sm flex-fill text-center m-0 py-2">
+                <i class="bi bi-camera-fill me-1"></i> Kamera Langsung
                 <input type="file" id="inputFotoCamera" accept="image/*" capture="environment" style="display:none;" onchange="handleFileSelect(event)">
               </label>
               
-              <label class="btn btn-outline-secondary btn-sm flex-fill text-center m-0">
-                <i class="bi bi-images me-1"></i> Pilih dari Galeri File
+              <label class="btn btn-outline-secondary btn-sm flex-fill text-center m-0 py-2">
+                <i class="bi bi-images me-1"></i> Galeri File HP
                 <input type="file" id="inputFotoGallery" accept="image/*" style="display:none;" onchange="handleFileSelect(event)">
               </label>
             </div>
@@ -343,24 +351,25 @@
             <input type="text" id="inputFotoKet" class="form-control form-control-sm" placeholder="Keterangan Foto (Contoh: Praktik Servis Karburator)">
           </div>
           <div class="col-12 col-md-4">
-            <button class="btn btn-success btn-sm w-100" onclick="uploadSelectedFoto()"><i class="bi bi-cloud-upload me-1"></i> Upload Dokumentasi</button>
+            <button class="btn btn-success btn-sm w-100 py-1" onclick="uploadSelectedFoto()"><i class="bi bi-cloud-upload me-1"></i> Upload ke Dokumentasi</button>
           </div>
         </div>
 
       </div>
     </div>
 
-    <!-- Toolbar Cetak & Export -->
+    <!-- Toolbar Realtime WA & Cetak & Export -->
     <div class="card no-print bg-light border mb-4">
       <div class="card-body p-2 p-md-3">
         <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
           <div>
-            <h6 class="m-0 fw-bold fs-7"><i class="bi bi-download me-1"></i> Simpan / Cetak Laporan</h6>
+            <h6 class="m-0 fw-bold fs-7"><i class="bi bi-send-check-fill me-1 text-success"></i> Kirim Laporan Realtime & Simpan</h6>
           </div>
           <div class="d-flex flex-wrap gap-1 w-100 w-md-auto">
+            <button class="btn btn-success btn-sm flex-fill fw-bold" onclick="sendToWhatsApp()"><i class="bi bi-whatsapp me-1"></i> Kirim Laporan Hari Ini via WA</button>
             <!-- <button class="btn btn-danger btn-sm flex-fill" onclick="generatePDF()"><i class="bi bi-file-earmark-pdf-fill me-1"></i> Direct PDF</button> -->
-            <button class="btn btn-danger btn-sm flex-fill" onclick="triggerPrint()"><i class="bi bi-printer-fill me-1"></i> Cetak / Simpan PDF HP</button>
-            <button class="btn btn-success btn-sm flex-fill" onclick="exportExcel()"><i class="bi bi-file-earmark-excel-fill me-1"></i> Excel</button>
+            <button class="btn btn-danger btn-sm flex-fill" onclick="triggerPrint()"><i class="bi bi-printer-fill me-1"></i> Cetak / Simpan PDF</button>
+            <button class="btn btn-outline-success btn-sm flex-fill" onclick="exportExcel()"><i class="bi bi-file-earmark-excel-fill me-1"></i> Excel</button>
             <button class="btn btn-outline-dark btn-sm flex-fill" onclick="exportJSON()"><i class="bi bi-save me-1"></i> Backup</button>
             <label class="btn btn-outline-info btn-sm flex-fill m-0">
               <i class="bi bi-upload me-1"></i> Restore
@@ -391,7 +400,7 @@
             <td style="padding: 2px 0;" id="pdfNamaBengkel">-</td>
           </tr>
           <tr>
-            <td style="font-weight: bold; padding: 2px 0; vertical-align: top;">Nama Kelompok / Anggota</td>
+            <td style="font-weight: bold; padding: 2px 0; vertical-align: top;">Nama Siswa</td>
             <td style="padding: 2px 0; vertical-align: top;">:</td>
             <td style="padding: 2px 0;" id="pdfNamaKelompok">-</td>
           </tr>
@@ -451,6 +460,18 @@
     let groupProfile = { namaBengkel: '', namaKelompok: '' };
     let tempSelectedBase64 = null;
 
+    // Set tanggal realtime hari ini secara otomatis
+    function setRealtimeDate() {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const day = String(today.getDate()).padStart(2, '0');
+      const todayFormatted = `${year}-${month}-${day}`;
+      
+      const dateInput = document.getElementById('inputTanggal');
+      dateInput.value = todayFormatted;
+    }
+
     // Format Tanggal Indonesia
     function formatTanggalIndo(dateStr) {
       if(!dateStr) return '';
@@ -462,6 +483,7 @@
 
     // Load Data awal
     window.addEventListener('DOMContentLoaded', () => {
+      setRealtimeDate();
       loadStorageData();
       renderAll();
     });
@@ -498,7 +520,7 @@
 
       const index = parseInt(document.getElementById('editIndex').value);
       const entryData = {
-        tanggal: document.getElementById('inputTanggal').value,
+        tanggal: document.getElementById('inputTanggal').value, // Selalu mengambil tanggal realtime locked
         jumlah: document.getElementById('inputJumlah').value,
         merek: document.getElementById('inputMerek').value.trim(),
         kerusakan: document.getElementById('inputKerusakan').value.trim(),
@@ -519,7 +541,8 @@
     function resetForm() {
       document.getElementById('journalForm').reset();
       document.getElementById('editIndex').value = "-1";
-      document.getElementById('btnSubmitJournal').innerHTML = `<i class="bi bi-plus-circle me-1"></i> Tambah Kegiatan ke Jurnal`;
+      setRealtimeDate(); // Reset kembali ke tanggal realtime
+      document.getElementById('btnSubmitJournal').innerHTML = `<i class="bi bi-plus-circle me-1"></i> Simpan Kegiatan Hari Ini`;
     }
 
     function editEntry(index) {
@@ -733,6 +756,41 @@
 
         photoGridBody.appendChild(tr);
       }
+    }
+
+    // Kirim Laporan Realtime via WA
+    function sendToWhatsApp() {
+      if (journalEntries.length === 0) {
+        alert('Belum ada data jurnal harian yang diisi untuk dikirim!');
+        return;
+      }
+
+      const todayStr = document.getElementById('inputTanggal').value;
+      const todayFormatted = formatTanggalIndo(todayStr);
+
+      // Cari kegiatan hari ini
+      const todayEntries = journalEntries.filter(item => item.tanggal === todayStr);
+      
+      let message = `*LAPORAN PRAKTIK HARIAN TBSM SMK S AKP BERINGIN*\n`;
+      message += `📅 *Tanggal:* ${todayFormatted}\n`;
+      message += `🏭 *Bengkel:* ${groupProfile.namaBengkel || '-'}\n`;
+      message += `👥 *Kelompok:* ${groupProfile.namaKelompok || '-'}\n\n`;
+      message += `*RINGKASAN KEGIATAN HARIAN:*\n`;
+
+      const entriesToReport = todayEntries.length > 0 ? todayEntries : journalEntries;
+
+      entriesToReport.forEach((item, idx) => {
+        message += `\n*${idx + 1}. Tipe Motor:* ${item.merek}\n`;
+        message += `   • *Jumlah:* ${item.jumlah} Unit\n`;
+        message += `   • *Kerusakan:* ${item.kerusakan.replace(/\n/g, ', ')}\n`;
+        message += `   • *Kegiatan Servis:* ${item.servis.replace(/\n/g, ', ')}\n`;
+      });
+
+      message += `\n📷 *Dokumentasi Foto:* ${photoEntries.length} foto telah diunggah di sistem.\n`;
+      message += `\n_Laporan dikirim secara realtime dari sistem Jurnal Praktik TBSM._`;
+
+      const encodedMsg = encodeURIComponent(message);
+      window.open(`https://api.whatsapp.com/send?text=${encodedMsg}`, '_blank');
     }
 
     function clearAllData() {
