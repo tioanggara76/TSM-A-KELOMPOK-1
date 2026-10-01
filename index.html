@@ -2,10 +2,10 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Jurnal Praktik TBSM - SMK S AKP BERINGIN</title>
   
-  <!-- Bootstrap 5 CSS & FontAwesome -->
+  <!-- Bootstrap 5 CSS & FontAwesome Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   
@@ -17,7 +17,7 @@
     :root {
       --primary-color: #0d6efd;
       --secondary-color: #0b5ed7;
-      --bg-light: #f8f9fa;
+      --bg-light: #f4f6f9;
     }
 
     body {
@@ -26,11 +26,12 @@
       padding-bottom: 50px;
     }
 
+    /* Header Mobile Friendly */
     .main-header {
       background: linear-gradient(135deg, #0d6efd, #03346e);
       color: white;
-      padding: 25px 0;
-      margin-bottom: 25px;
+      padding: 18px 12px;
+      margin-bottom: 20px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.15);
       border-bottom: 4px solid #ffc107;
     }
@@ -38,89 +39,46 @@
     .card {
       border: none;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      margin-bottom: 25px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+      margin-bottom: 20px;
     }
 
     .card-header {
       background-color: #ffffff;
       border-bottom: 2px solid #f0f0f0;
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: 1rem;
       border-radius: 12px 12px 0 0 !important;
-      padding: 15px 20px;
+      padding: 12px 16px;
     }
 
-    /* Form Inputs */
-    .form-control, .form-select {
+    /* Form Controls */
+    .form-control, .btn {
       border-radius: 8px;
-      padding: 10px 14px;
-    }
-    
-    .form-control:focus, .form-select:focus {
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
     }
 
-    /* Photo Grid UI */
-    .photo-preview-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1px));
-      gap: 15px;
-    }
-
-    .photo-card {
-      position: relative;
-      border: 1px solid #dee2e6;
-      border-radius: 8px;
-      overflow: hidden;
-      background: #fff;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-
-    .photo-card img {
-      width: 100%;
-      height: 140px;
-      object-fit: cover;
-    }
-
-    .photo-card .btn-remove {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      background: rgba(220, 53, 69, 0.9);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 26px;
-      height: 26px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    /* Print Template Area */
+    /* Print Template Container */
     #pdf-template {
       background: white;
-      padding: 30px;
+      padding: 25px;
       margin: 0 auto;
       max-width: 900px;
       color: #000;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
 
-    /* Table Formatting for Journal */
+    /* Journal Table Styling */
     .journal-table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 15px;
+      margin-top: 10px;
       font-size: 13px;
     }
 
     .journal-table th, .journal-table td {
       border: 1px solid #000 !important;
-      padding: 8px 10px;
+      padding: 8px;
       vertical-align: top;
     }
 
@@ -133,7 +91,7 @@
       print-color-adjust: exact;
     }
 
-    /* PHOTO GRID SPECIFIC FOR PDF 2-COLUMN DISPLAY */
+    /* PHOTO GRID SPECIFIC FOR 2-COLUMNS DISPLAY IN MOBILE & PDF */
     .photo-grid-2col {
       width: 100%;
       border-collapse: collapse;
@@ -143,44 +101,82 @@
 
     .photo-grid-2col td {
       width: 50%;
-      padding: 8px;
+      padding: 6px;
       vertical-align: top;
       border: 1px solid #000 !important;
       box-sizing: border-box;
+      position: relative;
     }
 
     .photo-box {
       text-align: center;
       width: 100%;
+      position: relative;
     }
 
     .photo-box img {
       width: 100%;
-      max-height: 240px;
-      object-fit: contain;
-      border: 1px solid #ccc;
+      height: 180px;
+      object-fit: cover;
+      border: 1px solid #ddd;
       display: block;
       margin: 0 auto 6px auto;
+      border-radius: 4px;
     }
 
     .photo-caption {
       font-size: 12px;
       font-weight: 600;
-      color: #333;
+      color: #222;
       word-wrap: break-word;
+      padding: 2px;
     }
 
-    /* Custom Bullet Lists in Tables */
+    /* Action Overlay Icons on Photos */
+    .photo-actions-overlay {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      gap: 5px;
+      z-index: 10;
+    }
+
+    .btn-photo-action {
+      background: rgba(0, 0, 0, 0.75);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-photo-action.btn-delete:hover {
+      background: #dc3545;
+    }
+
+    .btn-photo-action.btn-edit:hover {
+      background: #ffc107;
+      color: #000;
+    }
+
+    /* Custom Bullet List */
     ul.table-list {
       margin: 0;
-      padding-left: 18px;
+      padding-left: 16px;
     }
 
     ul.table-list li {
-      margin-bottom: 3px;
+      margin-bottom: 2px;
     }
 
-    /* Print Break Rules */
+    /* Page Breaks for Print & PDF */
     .page-break {
       page-break-before: always;
       break-before: page;
@@ -189,6 +185,35 @@
     .no-break {
       page-break-inside: avoid;
       break-inside: avoid;
+    }
+
+    /* Responsive Mobile Optimizations */
+    @media (max-width: 576px) {
+      #pdf-template {
+        padding: 12px;
+      }
+
+      .journal-table {
+        font-size: 11px;
+      }
+
+      .journal-table th, .journal-table td {
+        padding: 5px;
+      }
+
+      .photo-box img {
+        height: 120px;
+      }
+
+      .photo-caption {
+        font-size: 11px;
+      }
+
+      .btn-photo-action {
+        width: 28px;
+        height: 28px;
+        font-size: 11px;
+      }
     }
 
     @media print {
@@ -204,8 +229,12 @@
         top: 0;
         width: 100%;
         padding: 0;
+        box-shadow: none;
       }
       .no-print {
+        display: none !important;
+      }
+      .photo-actions-overlay {
         display: none !important;
       }
     }
@@ -213,125 +242,128 @@
 </head>
 <body>
 
-  <!-- Header Application -->
+  <!-- Header Aplikasi -->
   <header class="main-header no-print">
     <div class="container text-center">
-      <h2 class="fw-bold m-0"><i class="bi bi-journal-check me-2"></i>JURNAL PRAKTIK TBSM</h2>
-      <p class="lead m-0 fs-6 mt-1">SMK S AKP BERINGIN - Teknik & Bisnis Sepeda Motor</p>
+      <h3 class="fw-bold m-0 fs-4"><i class="bi bi-journal-check me-2"></i>JURNAL PRAKTIK TBSM</h3>
+      <p class="m-0 fs-7 opacity-90 mt-1">SMK S AKP BERINGIN</p>
     </div>
   </header>
 
-  <div class="container no-print">
+  <div class="container px-2 px-md-3">
     
     <!-- Profil Bengkel & Kelompok -->
-    <div class="card mb-4">
-      <div class="card-header d-flex align-items-center bg-primary text-white">
-        <i class="bi bi-house-gear-fill me-2 fs-5"></i> Identitas Bengkel & Kelompok
+    <div class="card no-print">
+      <div class="card-header bg-primary text-white d-flex align-items-center fs-6">
+        <i class="bi bi-house-gear-fill me-2"></i> Identitas Bengkel & Kelompok
       </div>
       <div class="card-body">
-        <div class="row g-3">
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">Nama Bengkel Tempat Praktik</label>
-            <input type="text" id="inputNamaBengkel" class="form-control" placeholder="Contoh: Bengkel Hendra Jaya Motor" oninput="saveGroupProfile()">
+        <div class="row g-2">
+          <div class="col-12 col-md-6">
+            <label class="form-label fw-semibold fs-7 mb-1">Nama Bengkel Tempat Praktik</label>
+            <input type="text" id="inputNamaBengkel" class="form-control form-control-sm" placeholder="Contoh: Bengkel Hendra Jaya Motor" oninput="saveGroupProfile()">
           </div>
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">Nama Kelompok / Anggota (Pisahkan dengan koma atau Enter)</label>
-            <textarea id="inputNamaKelompok" class="form-control" rows="2" placeholder="Contoh: 1. Ahmad Dani&#10;2. Budi Santoso&#10;3. Rian Ardianto" oninput="saveGroupProfile()"></textarea>
+          <div class="col-12 col-md-6">
+            <label class="form-label fw-semibold fs-7 mb-1">Nama Kelompok / Anggota</label>
+            <textarea id="inputNamaKelompok" class="form-control form-control-sm" rows="2" placeholder="1. Ahmad Dani&#10;2. Budi Santoso" oninput="saveGroupProfile()"></textarea>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Form Input Kegiatan Harian -->
-    <div class="card mb-4">
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <span><i class="bi bi-pencil-square me-2 text-primary"></i> Input Laporan Kegiatan Harian</span>
-        <button class="btn btn-sm btn-outline-secondary" onclick="resetForm()"><i class="bi bi-arrow-counterclockwise"></i> Reset Form</button>
+    <div class="card no-print">
+      <div class="card-header d-flex justify-content-between align-items-center fs-6">
+        <span><i class="bi bi-pencil-square me-2 text-primary"></i> Input Kegiatan Harian</span>
+        <button class="btn btn-sm btn-outline-secondary py-0 fs-7" onclick="resetForm()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
       </div>
       <div class="card-body">
         <form id="journalForm">
           <input type="hidden" id="editIndex" value="-1">
           
-          <div class="row g-3 mb-3">
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Hari & Tanggal</label>
-              <input type="date" id="inputTanggal" class="form-control" required>
+          <div class="row g-2 mb-2">
+            <div class="col-7 col-md-6">
+              <label class="form-label fw-semibold fs-7 mb-1">Hari & Tanggal</label>
+              <input type="date" id="inputTanggal" class="form-control form-control-sm" required>
             </div>
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Jumlah Sepeda Motor (Unit)</label>
-              <input type="number" id="inputJumlah" class="form-control" placeholder="Contoh: 3" min="1" required>
-            </div>
-          </div>
-
-          <div class="row g-3 mb-3">
-            <div class="col-md-4">
-              <label class="form-label fw-semibold">Merek & Tipe Sepeda Motor</label>
-              <small class="text-muted d-block mb-1">Gunakan enter/baris baru per motor</small>
-              <textarea id="inputMerek" class="form-control" rows="3" placeholder="Honda Supra X&#10;Honda Scoopy&#10;Honda Vario 125" required></textarea>
-            </div>
-            <div class="col-md-4">
-              <label class="form-label fw-semibold">Kerusakan / Keluhan</label>
-              <small class="text-muted d-block mb-1">Gunakan enter/baris baru per poin</small>
-              <textarea id="inputKerusakan" class="form-control" rows="3" placeholder="Motor brebet&#10;Oli bocor&#10;Lampu depan mati" required></textarea>
-            </div>
-            <div class="col-md-4">
-              <label class="form-label fw-semibold">Kegiatan Servis / Perbaikan</label>
-              <small class="text-muted d-block mb-1">Gunakan enter/baris baru per poin</small>
-              <textarea id="inputServis" class="form-control" rows="3" placeholder="Ganti Oli&#10;Servis Karburator&#10;Ganti gigi tarek" required></textarea>
+            <div class="col-5 col-md-6">
+              <label class="form-label fw-semibold fs-7 mb-1">Jumlah Motor</label>
+              <input type="number" id="inputJumlah" class="form-control form-control-sm" placeholder="Contoh: 3" min="1" required>
             </div>
           </div>
 
-          <button type="submit" id="btnSubmitJournal" class="btn btn-primary w-100 py-2 fw-semibold">
+          <div class="row g-2 mb-3">
+            <div class="col-12 col-md-4">
+              <label class="form-label fw-semibold fs-7 mb-1">Merek & Tipe Motor</label>
+              <textarea id="inputMerek" class="form-control form-control-sm" rows="2" placeholder="Honda Supra X&#10;Honda Scoopy" required></textarea>
+            </div>
+            <div class="col-12 col-md-4">
+              <label class="form-label fw-semibold fs-7 mb-1">Kerusakan / Keluhan</label>
+              <textarea id="inputKerusakan" class="form-control form-control-sm" rows="2" placeholder="Motor brebet&#10;Oli bocor" required></textarea>
+            </div>
+            <div class="col-12 col-md-4">
+              <label class="form-label fw-semibold fs-7 mb-1">Kegiatan Servis / Perbaikan</label>
+              <textarea id="inputServis" class="form-control form-control-sm" rows="2" placeholder="Ganti Oli&#10;Servis Karburator" required></textarea>
+            </div>
+          </div>
+
+          <button type="submit" id="btnSubmitJournal" class="btn btn-primary w-100 fw-semibold btn-sm py-2">
             <i class="bi bi-plus-circle me-1"></i> Tambah Kegiatan ke Jurnal
           </button>
         </form>
       </div>
     </div>
 
-    <!-- Upload Foto Dokumentasi -->
-    <div class="card mb-4">
-      <div class="card-header d-flex align-items-center">
-        <i class="bi bi-camera-fill me-2 text-primary"></i> Upload Dokumentasi Foto Praktik
+    <!-- Upload Foto Dokumentasi (Opsi Kamera vs Galeri) -->
+    <div class="card no-print">
+      <div class="card-header d-flex align-items-center fs-6">
+        <i class="bi bi-camera-fill me-2 text-primary"></i> Upload Foto Dokumentasi
       </div>
       <div class="card-body">
-        <div class="row g-3 align-items-end mb-3">
-          <div class="col-md-6">
-            <label class="form-label fw-semibold">Pilih Foto (Kamera HP / Galeri)</label>
-            <input type="file" id="inputFotoFile" class="form-control" accept="image/*" capture="environment">
-            <small class="text-muted">Foto akan otomatis diperkecil agar pengunduhan PDF lancar di HP.</small>
-          </div>
-          <div class="col-md-4">
-            <label class="form-label fw-semibold">Keterangan Foto (Opsional)</label>
-            <input type="text" id="inputFotoKet" class="form-control" placeholder="Contoh: Praktik Servis Karburator">
-          </div>
-          <div class="col-md-2">
-            <button class="btn btn-success w-100" onclick="uploadFoto()"><i class="bi bi-upload"></i> Upload</button>
+        
+        <div class="row g-2 mb-2">
+          <div class="col-12">
+            <label class="form-label fw-semibold fs-7 mb-1">Pilih Mode Pengambilan Foto:</label>
+            <div class="d-flex gap-2">
+              <label class="btn btn-outline-primary btn-sm flex-fill text-center m-0">
+                <i class="bi bi-camera me-1"></i> Foto Langsung (Kamera)
+                <input type="file" id="inputFotoCamera" accept="image/*" capture="environment" style="display:none;" onchange="handleFileSelect(event)">
+              </label>
+              
+              <label class="btn btn-outline-secondary btn-sm flex-fill text-center m-0">
+                <i class="bi bi-images me-1"></i> Pilih dari Galeri File
+                <input type="file" id="inputFotoGallery" accept="image/*" style="display:none;" onchange="handleFileSelect(event)">
+              </label>
+            </div>
           </div>
         </div>
 
-        <!-- Preview Foto Terupload -->
-        <h6 class="fw-bold mt-4 mb-2">Daftar Foto Dokumentasi (<span id="photoCount">0</span>):</h6>
-        <div id="photoPreviewGrid" class="photo-preview-grid">
-          <p class="text-muted fst-italic fs-7">Belum ada foto yang diupload.</p>
+        <div class="row g-2 align-items-center" id="uploadConfigRow" style="display: none;">
+          <div class="col-12 col-md-8">
+            <input type="text" id="inputFotoKet" class="form-control form-control-sm" placeholder="Keterangan Foto (Contoh: Praktik Servis Karburator)">
+          </div>
+          <div class="col-12 col-md-4">
+            <button class="btn btn-success btn-sm w-100" onclick="uploadSelectedFoto()"><i class="bi bi-cloud-upload me-1"></i> Upload ke Dokumentasi</button>
+          </div>
         </div>
+
       </div>
     </div>
 
-    <!-- Toolbar Aksi Export & Download -->
-    <div class="card mb-4 bg-light border">
-      <div class="card-body">
+    <!-- Toolbar Cetak & Export -->
+    <div class="card no-print bg-light border mb-4">
+      <div class="card-body p-2 p-md-3">
         <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
           <div>
-            <h6 class="m-0 fw-bold"><i class="bi bi-download me-1"></i> Cetak / Simpan Laporan</h6>
-            <small class="text-muted">Gunakan tombol di bawah untuk mengunduh PDF atau Cetak via HP/Laptop</small>
+            <h6 class="m-0 fw-bold fs-7"><i class="bi bi-download me-1"></i> Simpan / Cetak Laporan</h6>
           </div>
-          <div class="d-flex flex-wrap gap-2">
-            <button class="btn btn-danger" onclick="generatePDF()"><i class="bi bi-file-earmark-pdf-fill me-1"></i> Unduh PDF Direct</button>
-            <button class="btn btn-secondary" onclick="triggerPrint()"><i class="bi bi-printer-fill me-1"></i> Cetak / Simpan PDF HP</button>
-            <button class="btn btn-success" onclick="exportExcel()"><i class="bi bi-file-earmark-excel-fill me-1"></i> Export Excel</button>
-            <button class="btn btn-outline-dark" onclick="exportJSON()"><i class="bi bi-save me-1"></i> Backup Data</button>
-            <label class="btn btn-outline-info m-0">
-              <i class="bi bi-upload me-1"></i> Restore Data
+          <div class="d-flex flex-wrap gap-1 w-100 w-md-auto">
+            <button class="btn btn-danger btn-sm flex-fill" onclick="generatePDF()"><i class="bi bi-file-earmark-pdf-fill me-1"></i> Direct PDF</button>
+            <button class="btn btn-secondary btn-sm flex-fill" onclick="triggerPrint()"><i class="bi bi-printer-fill me-1"></i> Cetak / Simpan PDF HP</button>
+            <button class="btn btn-success btn-sm flex-fill" onclick="exportExcel()"><i class="bi bi-file-earmark-excel-fill me-1"></i> Excel</button>
+            <button class="btn btn-outline-dark btn-sm flex-fill" onclick="exportJSON()"><i class="bi bi-save me-1"></i> Backup</button>
+            <label class="btn btn-outline-info btn-sm flex-fill m-0">
+              <i class="bi bi-upload me-1"></i> Restore
               <input type="file" id="restoreFile" accept=".json" style="display:none;" onchange="importJSON(event)">
             </label>
           </div>
@@ -339,109 +371,85 @@
       </div>
     </div>
 
-    <!-- Tabel Monitoring Jurnal -->
-    <div class="card mb-5">
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <span><i class="bi bi-table me-2 text-primary"></i> Data Jurnal Kegiatan Terinput</span>
-        <button class="btn btn-sm btn-outline-danger" onclick="clearAllData()"><i class="bi bi-trash"></i> Hapus Semua Data</button>
+    <!-- AREA CETAK / HASIL TAMPILAN LAPORAN BENGKEL & DOKUMENTASI -->
+    <div id="pdf-template">
+      
+      <!-- KOP LAPORAN -->
+      <div class="text-center mb-3">
+        <h4 class="fw-bold mb-1 fs-6 fs-md-5">LAPORAN KEGIATAN PRAKTIK BENGKEL</h4>
+        <h5 class="fw-bold mb-1 fs-6">TEKNIK DAN BISNIS SEPEDA MOTOR (TBSM)</h5>
+        <h5 class="fw-bold mb-2 fs-6">SMK S AKP BERINGIN</h5>
+        <hr style="border-top: 2px solid #000; opacity: 1; margin: 8px 0;">
       </div>
-      <div class="card-body p-0">
-        <div class="table-responsive">
-          <table class="table table-hover table-striped align-middle m-0">
-            <thead class="table-dark">
-              <tr>
-                <th width="5%" class="text-center">No</th>
-                <th width="15%">Hari & Tanggal</th>
-                <th width="10%" class="text-center">Jumlah</th>
-                <th width="20%">Merek & Tipe</th>
-                <th width="20%">Kerusakan</th>
-                <th width="20%">Kegiatan Servis</th>
-                <th width="10%" class="text-center">Aksi</th>
-              </tr>
-            </thead>
-            <tbody id="journalTableBody">
-              <tr>
-                <td colspan="7" class="text-center text-muted py-4">Belum ada data jurnal. Silahkan tambahkan kegiatan di atas.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+
+      <!-- PROFIL BENGKEL & KELOMPOK -->
+      <div class="mb-3 fs-7">
+        <table style="width: 100%; border: none;">
+          <tr>
+            <td style="width: 130px; font-weight: bold; padding: 2px 0;">Nama Bengkel</td>
+            <td style="width: 10px; padding: 2px 0;">:</td>
+            <td style="padding: 2px 0;" id="pdfNamaBengkel">-</td>
+          </tr>
+          <tr>
+            <td style="font-weight: bold; padding: 2px 0; vertical-align: top;">Nama Kelompok / Anggota</td>
+            <td style="padding: 2px 0; vertical-align: top;">:</td>
+            <td style="padding: 2px 0;" id="pdfNamaKelompok">-</td>
+          </tr>
+        </table>
       </div>
-    </div>
 
-  </div>
-
-  <!-- AREA TEMPLATE CETAK / PDF (Tampilan Sesuai Format Word) -->
-  <div id="pdf-template">
-    
-    <!-- Kop Header Surat PDF -->
-    <div class="text-center mb-3">
-      <h3 class="fw-bold mb-1" style="font-size: 18px;">LAPORAN KEGIATAN PRAKTIK BENGKEL</h3>
-      <h3 class="fw-bold mb-1" style="font-size: 16px;">TEKNIK DAN BISNIS SEPEDA MOTOR (TBSM)</h3>
-      <h4 class="fw-bold mb-3" style="font-size: 16px;">SMK S AKP BERINGIN</h4>
-      <hr style="border-top: 2px solid #000; opacity: 1; margin: 10px 0;">
-    </div>
-
-    <!-- Informasi Bengkel & Kelompok di PDF -->
-    <div class="mb-3" style="font-size: 13px;">
-      <table style="width: 100%; border: none;">
-        <tr>
-          <td style="width: 130px; font-weight: bold; padding: 2px 0;">Nama Bengkel</td>
-          <td style="width: 10px; padding: 2px 0;">:</td>
-          <td style="padding: 2px 0;" id="pdfNamaBengkel">-</td>
-        </tr>
-        <tr>
-          <td style="font-weight: bold; padding: 2px 0; vertical-align: top;">Nama Kelompok / Anggota</td>
-          <td style="padding: 2px 0; vertical-align: top;">:</td>
-          <td style="padding: 2px 0;" id="pdfNamaKelompok">-</td>
-        </tr>
+      <!-- TABEL JURNAL KEGIATAN -->
+      <table class="journal-table mb-4">
+        <thead>
+          <tr>
+            <th width="5%" rowspan="2" style="vertical-align: middle;">No</th>
+            <th width="22%" rowspan="2" style="vertical-align: middle;">Hari & Tanggal</th>
+            <th colspan="4">Laporan Kegiatan Praktik di Bengkel</th>
+          </tr>
+          <tr>
+            <th width="12%">Jumlah</th>
+            <th width="20%">Merek & Tipe</th>
+            <th width="20%">Kerusakan</th>
+            <th width="21%">Kegiatan Servis</th>
+          </tr>
+        </thead>
+        <tbody id="pdfJournalBody">
+          <!-- Populated dynamically -->
+        </tbody>
       </table>
+
+      <!-- AREA DOKUMENTASI FOTO (GRID 2 KOLOM RAPI & ADA TOMBOL EDIT/HAPUS OVERLAY) -->
+      <div class="page-break"></div>
+
+      <div class="text-center mb-3 pt-2">
+        <h4 class="fw-bold mb-1 fs-6 fs-md-5">DOKUMENTASI KEGIATAN PRAKTIK</h4>
+        <h5 class="fw-bold mb-1 fs-6">TEKNIK DAN BISNIS SEPEDA MOTOR (TBSM)</h5>
+        <h5 class="fw-bold mb-2 fs-6">SMK S AKP BERINGIN</h5>
+        <hr style="border-top: 2px solid #000; opacity: 1; margin: 8px 0;">
+      </div>
+
+      <!-- Tabel Grid Foto 2 Kolom -->
+      <table class="photo-grid-2col" id="pdfPhotoTableGrid">
+        <tbody id="pdfPhotoBody">
+          <!-- Populated dynamically with 2 photos per row -->
+        </tbody>
+      </table>
+
     </div>
 
-    <!-- Tabel Jurnal Utama (Sesuai Word) -->
-    <table class="journal-table mb-4">
-      <thead>
-        <tr>
-          <th width="5%" rowspan="2" style="vertical-align: middle;">No</th>
-          <th width="20%" rowspan="2" style="vertical-align: middle;">Hari & Tanggal</th>
-          <th colspan="4">Laporan Kegiatan Praktik di Bengkel</th>
-        </tr>
-        <tr>
-          <th width="12%">Jumlah</th>
-          <th width="21%">Merek & Tipe</th>
-          <th width="21%">Kerusakan</th>
-          <th width="21%">Kegiatan Servis</th>
-        </tr>
-      </thead>
-      <tbody id="pdfJournalBody">
-        <!-- Will be populated dynamically -->
-      </tbody>
-    </table>
-
-    <!-- HALAMAN BARU: DOKUMENTASI FOTO (Strict 2 Columns Grid) -->
-    <div class="page-break"></div>
-
-    <div class="text-center mb-4 pt-2">
-      <h3 class="fw-bold mb-1" style="font-size: 16px;">DOKUMENTASI KEGIATAN PRAKTIK</h3>
-      <h3 class="fw-bold mb-1" style="font-size: 15px;">TEKNIK DAN BISNIS SEPEDA MOTOR (TBSM)</h3>
-      <h4 class="fw-bold mb-3" style="font-size: 15px;">SMK S AKP BERINGIN</h4>
-      <hr style="border-top: 2px solid #000; opacity: 1; margin: 10px 0;">
+    <!-- Tombol Reset Seluruh Data -->
+    <div class="text-center my-4 no-print">
+      <button class="btn btn-sm btn-outline-danger" onclick="clearAllData()"><i class="bi bi-trash me-1"></i> Hapus Seluruh Data Jurnal & Foto</button>
     </div>
-
-    <!-- Tabel Grid 2 Kolom untuk Foto agar Rapi dan Tidak Kebawah -->
-    <table class="photo-grid-2col" id="pdfPhotoTableGrid">
-      <tbody id="pdfPhotoBody">
-        <!-- Will be populated dynamically 2 items per row -->
-      </tbody>
-    </table>
 
   </div>
 
   <script>
-    // State App
+    // App State
     let journalEntries = [];
     let photoEntries = [];
     let groupProfile = { namaBengkel: '', namaKelompok: '' };
+    let tempSelectedBase64 = null;
 
     // Format Tanggal Indonesia
     function formatTanggalIndo(dateStr) {
@@ -449,16 +457,10 @@
       const date = new Date(dateStr);
       const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
       const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-      
-      const dayName = days[date.getDay()];
-      const dayNum = date.getDate();
-      const monthName = months[date.getMonth()];
-      const year = date.getFullYear();
-
-      return `${dayName}, ${dayNum} ${monthName} ${year}`;
+      return `${days[date.getDay()]}, ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
     }
 
-    // Load Data
+    // Load Data awal
     window.addEventListener('DOMContentLoaded', () => {
       loadStorageData();
       renderAll();
@@ -490,7 +492,7 @@
       renderPDFProfile();
     }
 
-    // Submit / Edit Journal Entry
+    // Submit / Edit Journal
     document.getElementById('journalForm').addEventListener('submit', function(e) {
       e.preventDefault();
 
@@ -530,7 +532,7 @@
       document.getElementById('inputServis').value = item.servis;
 
       document.getElementById('btnSubmitJournal').innerHTML = `<i class="bi bi-check-circle me-1"></i> Simpan Perubahan Jurnal`;
-      window.scrollTo({ top: 150, behavior: 'smooth' });
+      window.scrollTo({ top: 100, behavior: 'smooth' });
     }
 
     function deleteEntry(index) {
@@ -541,23 +543,16 @@
       }
     }
 
-    // Upload & Compression Photo (Optimized for Mobile)
-    function uploadFoto() {
-      const fileInput = document.getElementById('inputFotoFile');
-      const captionInput = document.getElementById('inputFotoKet');
+    // Process Selected File (Kamera / Galeri)
+    function handleFileSelect(event) {
+      const file = event.target.files[0];
+      if (!file) return;
 
-      if (!fileInput.files || !fileInput.files[0]) {
-        alert('Silakan pilih foto terlebih dahulu!');
-        return;
-      }
-
-      const file = fileInput.files[0];
       const reader = new FileReader();
-
       reader.onload = function(e) {
         const img = new Image();
         img.onload = function() {
-          // Canvas compression setup (max 600px width for fast loading on HP and small LocalStorage footprint)
+          // Canvas Compression setup (Max Width 600px)
           const canvas = document.createElement('canvas');
           let width = img.width;
           let height = img.height;
@@ -574,35 +569,63 @@
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
 
-          // Compress to JPEG Quality 0.65
-          const compressedBase64 = canvas.toDataURL('image/jpeg', 0.65);
-
-          photoEntries.push({
-            id: Date.now(),
-            src: compressedBase64,
-            caption: captionInput.value.trim() || 'Foto Praktik'
-          });
-
-          localStorage.setItem('tbsm_photos', JSON.stringify(photoEntries));
-          fileInput.value = '';
-          captionInput.value = '';
-          renderPhotos();
+          tempSelectedBase64 = canvas.toDataURL('image/jpeg', 0.65);
+          document.getElementById('uploadConfigRow').style.display = 'flex';
+          document.getElementById('inputFotoKet').focus();
         };
         img.src = e.target.result;
       };
-
       reader.readAsDataURL(file);
     }
 
-    function deleteFoto(id) {
-      if(confirm('Hapus foto ini dari galeri?')) {
-        photoEntries = photoEntries.filter(p => p.id !== id);
+    function uploadSelectedFoto() {
+      if (!tempSelectedBase64) {
+        alert('Silakan pilih atau ambil foto terlebih dahulu!');
+        return;
+      }
+
+      const captionText = document.getElementById('inputFotoKet').value.trim() || 'Foto Praktik';
+
+      photoEntries.push({
+        id: Date.now(),
+        src: tempSelectedBase64,
+        caption: captionText
+      });
+
+      localStorage.setItem('tbsm_photos', JSON.stringify(photoEntries));
+
+      // Reset Form Upload
+      tempSelectedBase64 = null;
+      document.getElementById('inputFotoCamera').value = '';
+      document.getElementById('inputFotoGallery').value = '';
+      document.getElementById('inputFotoKet').value = '';
+      document.getElementById('uploadConfigRow').style.display = 'none';
+
+      // Render ulang galeri langsung di area dokumentasi
+      renderPDFPhotos();
+    }
+
+    function editFotoCaption(id) {
+      const photo = photoEntries.find(p => p.id === id);
+      if (!photo) return;
+
+      const newCaption = prompt('Ubah Keterangan Foto:', photo.caption);
+      if (newCaption !== null) {
+        photo.caption = newCaption.trim() || 'Foto Praktik';
         localStorage.setItem('tbsm_photos', JSON.stringify(photoEntries));
-        renderPhotos();
+        renderPDFPhotos();
       }
     }
 
-    // Format multiline array to HTML Bullet List
+    function deleteFoto(id) {
+      if(confirm('Hapus foto ini dari dokumentasi kegiatan praktik?')) {
+        photoEntries = photoEntries.filter(p => p.id !== id);
+        localStorage.setItem('tbsm_photos', JSON.stringify(photoEntries));
+        renderPDFPhotos();
+      }
+    }
+
+    // Helper format bullet list
     function formatBulletList(text) {
       if (!text) return '-';
       const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
@@ -611,7 +634,6 @@
 
       let html = '<ul class="table-list">';
       lines.forEach(line => {
-        // Strip out existing dash or bullet
         const cleanLine = line.replace(/^[•\-\*]\s*/, '');
         html += `<li>${cleanLine}</li>`;
       });
@@ -619,69 +641,14 @@
       return html;
     }
 
-    // Render Functions
     function renderAll() {
-      renderTableUI();
-      renderPhotos();
       renderPDFProfile();
       renderPDFJournal();
-    }
-
-    function renderTableUI() {
-      const tbody = document.getElementById('journalTableBody');
-      tbody.innerHTML = '';
-
-      if (journalEntries.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted py-4">Belum ada data jurnal terinput.</td></tr>`;
-        return;
-      }
-
-      journalEntries.forEach((item, idx) => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td class="text-center fw-bold">${idx + 1}</td>
-          <td>${formatTanggalIndo(item.tanggal)}</td>
-          <td class="text-center fw-semibold">${item.jumlah} Unit</td>
-          <td>${formatBulletList(item.merek)}</td>
-          <td>${formatBulletList(item.kerusakan)}</td>
-          <td>${formatBulletList(item.servis)}</td>
-          <td class="text-center">
-            <button class="btn btn-sm btn-outline-primary mb-1" onclick="editEntry(${idx})"><i class="bi bi-pencil"></i></button>
-            <button class="btn btn-sm btn-outline-danger mb-1" onclick="deleteEntry(${idx})"><i class="bi bi-trash"></i></button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function renderPhotos() {
-      const grid = document.getElementById('photoPreviewGrid');
-      document.getElementById('photoCount').innerText = photoEntries.length;
-      grid.innerHTML = '';
-
-      if (photoEntries.length === 0) {
-        grid.innerHTML = `<p class="text-muted fst-italic fs-7 m-0">Belum ada foto yang diupload.</p>`;
-        renderPDFPhotos();
-        return;
-      }
-
-      photoEntries.forEach(photo => {
-        const div = document.createElement('div');
-        div.className = 'photo-card';
-        div.innerHTML = `
-          <button class="btn-remove" onclick="deleteFoto(${photo.id})">&times;</button>
-          <img src="${photo.src}" alt="Dokumentasi">
-          <div class="p-2 text-center fs-7 text-truncate" title="${photo.caption}">${photo.caption}</div>
-        `;
-        grid.appendChild(div);
-      });
-
       renderPDFPhotos();
     }
 
     function renderPDFProfile() {
       document.getElementById('pdfNamaBengkel').innerText = groupProfile.namaBengkel || '-';
-      
       const kelompokText = groupProfile.namaKelompok || '-';
       document.getElementById('pdfNamaKelompok').innerHTML = kelompokText.replace(/\n/g, '<br>');
     }
@@ -691,7 +658,7 @@
       pdfBody.innerHTML = '';
 
       if (journalEntries.length === 0) {
-        pdfBody.innerHTML = `<tr><td colspan="6" class="text-center py-3">Belum ada data jurnal.</td></tr>`;
+        pdfBody.innerHTML = `<tr><td colspan="6" class="text-center py-3 text-muted">Belum ada data kegiatan harian yang diinput.</td></tr>`;
         return;
       }
 
@@ -699,9 +666,14 @@
         const tr = document.createElement('tr');
         tr.className = 'no-break';
         tr.innerHTML = `
-          <td class="text-center">${idx + 1}</td>
+          <td class="text-center fw-bold">${idx + 1}
+            <div class="no-print mt-1">
+              <i class="bi bi-pencil text-primary me-1 cursor-pointer" onclick="editEntry(${idx})" title="Edit"></i>
+              <i class="bi bi-trash text-danger cursor-pointer" onclick="deleteEntry(${idx})" title="Hapus"></i>
+            </div>
+          </td>
           <td>${formatTanggalIndo(item.tanggal)}</td>
-          <td class="text-center">${item.jumlah} Unit</td>
+          <td class="text-center fw-semibold">${item.jumlah} Unit</td>
           <td>${formatBulletList(item.merek)}</td>
           <td>${formatBulletList(item.kerusakan)}</td>
           <td>${formatBulletList(item.servis)}</td>
@@ -710,17 +682,16 @@
       });
     }
 
-    // STRICT 2-COLUMN TABLE GRID FOR PDF PHOTO GALLERY
+    // RENDER FOTO LANGSUNG DI DALAM TABEL DOKUMENTASI KEGIATAN PRAKTIK (GRID 2 KOLOM)
     function renderPDFPhotos() {
       const photoGridBody = document.getElementById('pdfPhotoBody');
       photoGridBody.innerHTML = '';
 
       if (photoEntries.length === 0) {
-        photoGridBody.innerHTML = `<tr><td colspan="2" class="text-center text-muted py-4">Belum ada foto dokumentasi.</td></tr>`;
+        photoGridBody.innerHTML = `<tr><td colspan="2" class="text-center text-muted py-4">Belum ada foto dokumentasi. Silakan pilih / foto kegiatan di atas.</td></tr>`;
         return;
       }
 
-      // Group photos in pairs of 2 for strict 2-column table rows
       for (let i = 0; i < photoEntries.length; i += 2) {
         const tr = document.createElement('tr');
         tr.className = 'no-break';
@@ -730,6 +701,10 @@
 
         let cell1HTML = `
           <div class="photo-box">
+            <div class="photo-actions-overlay no-print">
+              <button class="btn-photo-action btn-edit" onclick="editFotoCaption(${photo1.id})" title="Ubah Keterangan"><i class="bi bi-pencil-fill"></i></button>
+              <button class="btn-photo-action btn-delete" onclick="deleteFoto(${photo1.id})" title="Hapus Foto"><i class="bi bi-trash-fill"></i></button>
+            </div>
             <img src="${photo1.src}">
             <div class="photo-caption">${photo1.caption}</div>
           </div>
@@ -739,12 +714,16 @@
         if (photo2) {
           cell2HTML = `
             <div class="photo-box">
+              <div class="photo-actions-overlay no-print">
+                <button class="btn-photo-action btn-edit" onclick="editFotoCaption(${photo2.id})" title="Ubah Keterangan"><i class="bi bi-pencil-fill"></i></button>
+                <button class="btn-photo-action btn-delete" onclick="deleteFoto(${photo2.id})" title="Hapus Foto"><i class="bi bi-trash-fill"></i></button>
+              </div>
               <img src="${photo2.src}">
               <div class="photo-caption">${photo2.caption}</div>
             </div>
           `;
         } else {
-          cell2HTML = `<div></div>`; // Empty cell if odd number of photos
+          cell2HTML = `<div></div>`;
         }
 
         tr.innerHTML = `
@@ -756,7 +735,6 @@
       }
     }
 
-    // CLEAR ALL DATA
     function clearAllData() {
       if(confirm('Apakah Anda yakin ingin menghapus SELURUH data jurnal & foto? Data yang dihapus tidak dapat dikembalikan!')) {
         journalEntries = [];
@@ -773,7 +751,6 @@
       }
     }
 
-    // EXPORT TO EXCEL
     function exportExcel() {
       if (journalEntries.length === 0) {
         alert('Tidak ada data jurnal untuk diexport!');
@@ -797,7 +774,6 @@
       XLSX.writeFile(workbook, `Jurnal_TBSM_${bklName}.xlsx`);
     }
 
-    // BACKUP JSON
     function exportJSON() {
       const backupData = {
         groupProfile,
@@ -815,7 +791,6 @@
       downloadAnchor.remove();
     }
 
-    // RESTORE JSON
     function importJSON(event) {
       const fileReader = new FileReader();
       fileReader.onload = function(e) {
@@ -845,13 +820,12 @@
       fileReader.readAsText(event.target.files[0]);
     }
 
-    // GENERATE PDF (html2pdf.js) Direct Download
     function generatePDF() {
       const element = document.getElementById('pdf-template');
       const bklName = (groupProfile.namaBengkel || 'TBSM').replace(/[^a-zA-Z0-0]/g, '_');
       
       const opt = {
-        margin:       [10, 10, 10, 10],
+        margin:       [8, 8, 8, 8],
         filename:     `Jurnal_TBSM_${bklName}.pdf`,
         image:        { type: 'jpeg', quality: 0.98 },
         html2canvas:  { scale: 2, useCORS: true },
@@ -862,7 +836,6 @@
       html2pdf().set(opt).from(element).save();
     }
 
-    // TRIGGER PRINT FOR MOBILE BROWSER PRINT-TO-PDF
     function triggerPrint() {
       window.print();
     }
