@@ -224,26 +224,65 @@
       }
     }
 
+    /* Ukuran kertas A4 Landscape */
+    @page {
+      size: A4 landscape;
+      margin: 10mm 10mm 10mm 30mm; /* atas kanan bawah kiri (kiri lebih lebar untuk jilid) */
+    }
+
     @media print {
-      body * {
-        visibility: hidden;
+      html, body {
+        background: #fff !important;
+        padding: 0 !important;
+        margin: 0 !important;
       }
-      #pdf-template, #pdf-template * {
-        visibility: visible;
-      }
-      #pdf-template {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        padding: 0;
-        box-shadow: none;
-      }
-      .no-print {
-        display: none !important;
-      }
+
+      /* Sembunyikan semua elemen non-laporan */
+      .no-print,
+      .main-header,
       .photo-actions-overlay {
         display: none !important;
+      }
+
+      /* Container dibuat full & rata tengah */
+      .container {
+        max-width: 100% !important;
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 auto !important;
+      }
+
+      #pdf-template {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+      }
+
+      /* Tabel di tengah halaman */
+      .journal-table,
+      .photo-grid-2col {
+        width: 100% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+
+      /* Header tabel berulang di tiap halaman */
+      .journal-table thead {
+        display: table-header-group;
+      }
+
+      .journal-table tr,
+      .photo-grid-2col tr {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      /* Foto menyesuaikan kertas landscape */
+      .photo-box img {
+        height: 200px;
       }
     }
   </style>
@@ -273,7 +312,7 @@
           </div>
           <div class="col-12 col-md-6">
             <label class="form-label fw-semibold fs-7 mb-1">Nama Siswa</label>
-            <textarea id="inputNamaKelompok" class="form-control form-control-sm" rows="2" placeholder="1. Ahmad Dani&#10;2. Budi Santoso" oninput="saveGroupProfile()"></textarea>
+            <input id="inputNamaKelompok" class="form-control form-control-sm" rows="2" placeholder="1. Ahmad Dani" oninput="saveGroupProfile()">
           </div>
         </div>
       </div>
@@ -828,7 +867,7 @@
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "Jurnal TBSM");
 
-      const bklName = (groupProfile.namaBengkel || 'TBSM').replace(/[^a-zA-Z0-0]/g, '_');
+      const bklName = (groupProfile.namaBengkel || 'TBSM').replace(/[^a-zA-Z0-9]/g, '_');
       XLSX.writeFile(workbook, `Jurnal_TBSM_${bklName}.xlsx`);
     }
 
@@ -842,7 +881,7 @@
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
       const downloadAnchor = document.createElement('a');
       downloadAnchor.setAttribute("href", dataStr);
-      const bklName = (groupProfile.namaBengkel || 'TBSM').replace(/[^a-zA-Z0-0]/g, '_');
+      const bklName = (groupProfile.namaBengkel || 'TBSM').replace(/[^a-zA-Z0-9]/g, '_');
       downloadAnchor.setAttribute("download", `Backup_Jurnal_TBSM_${bklName}.json`);
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();
@@ -880,14 +919,15 @@
 
     function generatePDF() {
       const element = document.getElementById('pdf-template');
-      const bklName = (groupProfile.namaBengkel || 'TBSM').replace(/[^a-zA-Z0-0]/g, '_');
+      const bklName = (groupProfile.namaBengkel || 'TBSM').replace(/[^a-zA-Z0-9]/g, '_');
       
       const opt = {
-        margin:       [8, 8, 8, 8],
+        margin: [8, 8, 8, 8],
+        alignment: 'center',
         filename:     `Jurnal_TBSM_${bklName}.pdf`,
         image:        { type: 'jpeg', quality: 0.98 },
         html2canvas:  { scale: 2, useCORS: true },
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' },
         pagebreak:    { mode: ['css', 'legacy'] }
       };
 
